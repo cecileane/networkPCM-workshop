@@ -1,0 +1,31 @@
+project:
+  type: website
+
+website:
+  title: "Comparative methods on reticulate phylogenies"
+  site-url: https://cecileane.github.io/networkPCM-workshop
+  repo-url: https://github.com/cecileane/networkPCM-workshop
+  repo-actions: [issue]
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: http://crsl4.github.io/PhyloNetworks.jl/latest/
+        text: PhyloNetworks manual
+    right:
+      - icon: github
+        href: https://github.com/cecileane/networkPCM-workshop
+  sidebar:
+    style: "docked"
+    search: true
+    contents:
+      - index.qmd
+      - topic*.qmd
+  page-navigation: true
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+

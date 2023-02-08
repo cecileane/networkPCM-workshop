@@ -1,0 +1,83 @@
+# project-specific
+figures/*
+resources/*
+notes.md
+*.ipynb
+
+/.quarto/
+/_site/
+_site/*
+/env/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# LaTeX
+*.aux
+*.glo
+*.idx
+*.log
+*.toc
+*.ist
+*.acn
+*.acr
+*.alg
+*.bbl
+*.blg
+*.dvi
+*.glg
+*.gls
+*.ilg
+*.ind
+*.lof
+*.lot
+*.maf
+*.mtc
+*.mtc1
+*.synctex.gz
+*.pdf
+*.bst
+
+# julia & R
+*.juliahistory
+*.Rhistory
+*.err
+*.RData
+*.Rda
+*.rds
+*.jld
+*.Rproj*
+*.Ruserdata
+
+# figures
+*.svg
+*.eps
+*.jpg
+*.jpeg
+*.png
+*.pdf
+
+# office
+*.xls*
+*.doc*
+*.ppt*
+
+# html
+*.css
+*.js
+*.ttf
+
+# sequences
+*.aln
+*.fna
+*.faa
+*.fasta
+*.fa
+*.dat
+*.paml

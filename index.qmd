@@ -1,0 +1,17 @@
+---
+title: "Comparative methods on reticulate phylogenies"
+subtitle: "Botany 2023"
+---
+
+This repository contains materials for a workshop at the Botany 2023 conference
+on 2023-07-23. This session is part of the workshop
+"Methodological advances in reticulate evolution"
+organized by George Tiley & Claudia Solís-Lemus.
+
+Goal: learn to analyze trait data using phylogenetic comparative methods (PCMs)
+on reticulate phylogenies, modelled by phylogenetic networks --also named
+admixture graphs when modelling closely-related populations.
+We will use methods implemented [PhyloNetworks](https://github.com/crsl4/PhyloNetworks.jl).
+
+You can find and clone the workshop material at this
+[github repository](https://github.com/cecileane/networkPCM-workshop).
