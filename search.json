@@ -1,0 +1,30 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Comparative methods on reticulate phylogenies",
+    "section": "",
+    "text": "This repository contains materials for a workshop at the Botany 2023 conference on 2023-07-23. This session is part of the workshop “Methodological advances in reticulate evolution” organized by George Tiley & Claudia Solís-Lemus.\nGoal: learn to analyze trait data using phylogenetic comparative methods (PCMs) on reticulate phylogenies, modelled by phylogenetic networks –also named admixture graphs when modelling closely-related populations. We will use methods implemented PhyloNetworks.\nYou can find and clone the workshop material at this github repository.\n\npreparation\nWhat you should do prior to the workshop:\n\ninstall Julia and add it to your PATH\ninstall VSCode or another editor, if you don’t have one already.\n\nIf you use VSCode, like we will demonstrate, then within VSCode:\n\nadd code to your PATH, by opening the command palette then searching for “shell command”\nwithin VSCode, install the Julia extension and the Quarto extension.\n\nInstall Julia and some packages:\n\nOpen julia, either in a terminal, or terminal integrated in VSCode, or by opening the app\nwithin julia, install PhyloNetworks and PhyloPlots."
+  },
+  {
+    "objectID": "topic-overview.html",
+    "href": "topic-overview.html",
+    "title": "Workshop overview",
+    "section": "",
+    "text": "Comparative methods are meant to answer questions about trait evolution. In this workshop, we will learn about methods on networks:"
+  },
+  {
+    "objectID": "topic-overview.html#topics-we-will-cover",
+    "href": "topic-overview.html#topics-we-will-cover",
+    "title": "Workshop overview",
+    "section": "topics we will cover",
+    "text": "topics we will cover\n\nHow to calibrate a network, if needed\ncontinuous response: phylogenetic regression & phylogenetic ANOVA when the phylogeny is a network. Predictors can be continuous or discrete.\n\nancestral state reconstruction\nhow account for within-species variation in the response trait\nhow to measure the impact of gene flow\n\ndiscrete trait\n\nancestral state reconstruction\nwas the trait via gene flow?\n\nHow to visualize the results"
+  },
+  {
+    "objectID": "topic-overview.html#lets-get-started",
+    "href": "topic-overview.html#lets-get-started",
+    "title": "Workshop overview",
+    "section": "let’s get started",
+    "text": "let’s get started\nload the packages we will use:\n\n\nCode\nusing CSV               # read/write CSV and similar formats\nusing DataFrames        # versatile tabular data format\nusing PhyloNetworks     # includes many utilities\nusing PhyloPlots        # for plotting networks: via R\nusing RCall             # run R within Julia\n\n\nWe will use data on Polemonium from Rose et al. 2021 and Teo et al. 2023.\n\n\n\nPolemonium californicum, by Jeffrey Rose\n\n\nfirst load the network topology:\n\n\nCode\nsnaq_net = readTopology(\"data/polemonium_network_fromSNaQ.phy\");\nR\"par\"(mar=[0,0,0,0], cex=0.7); # 0 margins, cex<1 for smaller 'character expansion'\nplot(snaq_net; showedgelength=true, xlim=[0,18]); # increased limit to see full taxon labels\n\n\n\n\n\nthen the trait data\n\n\nCode\ntraits_indiv = CSV.File(\"data/polemonium_traits_individual.csv\") |> DataFrame\n\n\n\n1757×6 DataFrame1732 rows omittedRowmorphllengthlwidthelevationlatlareaString31Float64Float64Float64Float64Float641acutiflorum0.235072-0.8556660.4962.26-0.8621582acutiflorum0.797507-0.3354730.4962.260.220473acutiflorum0.398776-1.139430.4962.26-0.9822234acutiflorum0.10436-1.514130.4962.26-1.651335acutiflorum-0.314711-1.832580.4962.26-2.388866acutiflorum0.207014-0.8675010.4962.26-0.9020517acutiflorum0.076961-0.9942520.4962.26-1.158868acutiflorum0.29267-0.7985080.4962.26-0.7474039acutiflorum0.482426-1.139430.4962.26-0.89857310acutiflorum0.0295588-1.309330.4962.26-1.5213411acutiflorum0.122218-1.021650.4962.26-1.14112acutiflorum-0.18633-1.347070.4962.26-1.7749713acutiflorum-0.494296-1.609440.4962.26-2.3453⋮⋮⋮⋮⋮⋮⋮1746viscosum-1.7148-2.568293.50538.9861-4.524651747viscosum-1.20397-2.079443.50538.9861-3.524981748viscosum-0.597837-1.643343.50538.9861-2.482741749viscosum-1.50508-2.120263.50538.9861-3.866911750viscosum-0.419311-1.458873.50538.9861-2.119741751viscosum-0.809681-2.18483.50538.9861-3.236051752viscosum-1.24479-1.85793.50538.9861-3.344261753viscosum-1.19567-1.832583.50538.9861-3.269821754viscosum-1.7487-2.244323.50538.9861-4.234581755viscosum-0.883501-1.733493.50538.9861-2.858561756viscosum-1.26408-1.660733.50538.9861-3.166371757viscosum-1.37305-1.919593.50538.9861-3.53421"
+  }
+]
