@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://cecileane.github.io/networkPCM-workshop/index.html</loc>
+    <lastmod>2023-05-05T17:30:21.768Z</lastmod>
+  </url>
+  <url>
+    <loc>https://cecileane.github.io/networkPCM-workshop/topic-overview.html</loc>
+    <lastmod>2023-05-05T17:31:29.310Z</lastmod>
+  </url>
+  <url>
+    <loc>https://cecileane.github.io/networkPCM-workshop/topic1-netcalibration.html</loc>
+    <lastmod>2023-05-05T17:32:56.965Z</lastmod>
+  </url>
+  <url>
+    <loc>https://cecileane.github.io/networkPCM-workshop/topic2-phyloANOVA.html</loc>
+    <lastmod>2023-05-05T17:34:40.133Z</lastmod>
+  </url>
+  <url>
+    <loc>https://cecileane.github.io/networkPCM-workshop/topic3-asr.html</loc>
+    <lastmod>2023-05-05T17:36:19.268Z</lastmod>
+  </url>
+  <url>
+    <loc>https://cecileane.github.io/networkPCM-workshop/topic4-impactgeneflow.html</loc>
+    <lastmod>2023-05-05T17:37:55.262Z</lastmod>
+  </url>
+  <url>
+    <loc>https://cecileane.github.io/networkPCM-workshop/topic5-discrete.html</loc>
+    <lastmod>2023-05-05T17:39:22.569Z</lastmod>
+  </url>
+  <url>
+    <loc>https://cecileane.github.io/networkPCM-workshop/topic6-visualization.html</loc>
+    <lastmod>2023-05-05T17:41:05.098Z</lastmod>
+  </url>
+</urlset>

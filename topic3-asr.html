@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Comparative methods on networks - Ancestral state reconstruction</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./topic4-impactgeneflow.html" rel="next">
+<link href="./topic2-phyloANOVA.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Comparative methods on networks</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="./index.html" aria-current="page">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="http://crsl4.github.io/PhyloNetworks.jl/latest/">
+ <span class="menu-text">PhyloNetworks</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/cecileane/networkPCM-workshop"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Ancestral state reconstruction</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation docked overflow-auto">
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Home</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topic-overview.html" class="sidebar-item-text sidebar-link">Workshop overview</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topic1-netcalibration.html" class="sidebar-item-text sidebar-link">Network calibration</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topic2-phyloANOVA.html" class="sidebar-item-text sidebar-link">Phylogenetic regression</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topic3-asr.html" class="sidebar-item-text sidebar-link active">Ancestral state reconstruction</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topic4-impactgeneflow.html" class="sidebar-item-text sidebar-link">Impact of gene flow</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topic5-discrete.html" class="sidebar-item-text sidebar-link">Discrete trait</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topic6-visualization.html" class="sidebar-item-text sidebar-link">Visualization</a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#predict-ancestral-states" id="toc-predict-ancestral-states" class="nav-link active" data-scroll-target="#predict-ancestral-states">predict ancestral states</a></li>
+  <li><a href="#extant-species" id="toc-extant-species" class="nav-link" data-scroll-target="#extant-species">extant species</a></li>
+  <li><a href="#ancestral-nodes" id="toc-ancestral-nodes" class="nav-link" data-scroll-target="#ancestral-nodes">ancestral nodes</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/cecileane/networkPCM-workshop/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Ancestral state reconstruction</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell" data-execution_count="1">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># code from prior sections</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CSV</span>, <span class="bu">DataFrames</span>, <span class="bu">PhyloNetworks</span>, <span class="bu">PhyloPlots</span>, <span class="bu">RCall</span>, <span class="bu">StatsBase</span>, <span class="bu">StatsModels</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> <span class="fu">readTopology</span>(<span class="st">"data/polemonium_network_calibrated.phy"</span>);</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> tip <span class="kw">in</span> net.node tip.name <span class="op">=</span> <span class="fu">replace</span>(tip.name, <span class="st">r"_2</span><span class="sc">$</span><span class="st">" =&gt; </span>s<span class="st">""); end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>We load the data at the species (morph) level and focus on log-leaflet-length, without any predictor to predict ancestral states:</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>traits <span class="op">=</span> CSV.<span class="fu">read</span>(<span class="st">"data/polemonium_traits_morph.csv"</span>, DataFrame)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">subset!</span>(traits, <span class="op">:</span>morph <span class="op">=&gt;</span> <span class="fu">ByRow</span>(<span class="fu">in</span>(<span class="fu">tipLabels</span>(net)))) <span class="co"># subset of rows</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>fit <span class="op">=</span> <span class="fu">phylolm</span>(<span class="pp">@formula</span>(llength <span class="op">~</span> <span class="fl">1</span>), traits, net; tipnames<span class="op">=:</span>morph,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>              withinspecies_var<span class="op">=</span><span class="cn">true</span>, y_mean_std<span class="op">=</span><span class="cn">true</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<pre><code>PhyloNetworkLinearModel
+
+Formula: llength ~ 1
+
+Model: Brownian motion
+
+Parameter Estimates, using REML:
+phylogenetic variance rate: 0.946928
+within-species variance: 0.107488
+
+Coefficients:
+─────────────────────────────────────────────────────────────────────────
+                 Coef.  Std. Error      t  Pr(&gt;|t|)  Lower 95%  Upper 95%
+─────────────────────────────────────────────────────────────────────────
+(Intercept)  -0.293121    0.482432  -0.61    0.5520   -1.31583   0.729589
+─────────────────────────────────────────────────────────────────────────
+Log Likelihood: -334.4265947492
+AIC: 674.8531894984</code></pre>
+</div>
+</div>
+<p>From the intercept coefficient we get a prediction at the root (-0.293 on the log scale) but that’s it.</p>
+<section id="predict-ancestral-states" class="level2">
+<h2 class="anchored" data-anchor-id="predict-ancestral-states">predict ancestral states</h2>
+<p>This is typically called “ancestral state reconstruction” but prediction seems a more accurate term. This technique estimates the mean of nodes in the network: ancestral or extant species, conditional on the data. It’s important to look at prediction intervals, not just a “point” estimate.</p>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>asr <span class="op">=</span> <span class="fu">ancestralStateReconstruction</span>(fit)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>asr_pred <span class="op">=</span> <span class="fu">expectations</span>(asr) <span class="co"># predictions at all nodes</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+
+<div><div style="float: left;"><span>39×2 DataFrame</span></div><div style="float: right;"><span style="font-style: italic;">14 rows omitted</span></div><div style="clear: both;"></div></div><div class="data-frame" style="overflow-x: scroll;"><table class="data-frame table table-sm table-striped" style="margin-bottom: 6px;"><thead><tr class="header"><th class="rowNumber" style="font-weight: bold; text-align: right;">Row</th><th style="text-align: left;">nodeNumber</th><th style="text-align: left;">condExpectation</th></tr><tr class="subheader headerLastRow"><th class="rowNumber" style="font-weight: bold; text-align: right;"></th><th title="Int64" style="text-align: left;">Int64</th><th title="Float64" style="text-align: left;">Float64</th></tr></thead><tbody><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">1</td><td style="text-align: right;">-5</td><td style="text-align: right;">0.257485</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">2</td><td style="text-align: right;">-8</td><td style="text-align: right;">-0.201828</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">3</td><td style="text-align: right;">7</td><td style="text-align: right;">-0.198663</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">4</td><td style="text-align: right;">-6</td><td style="text-align: right;">0.100981</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">5</td><td style="text-align: right;">-4</td><td style="text-align: right;">0.0403308</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">6</td><td style="text-align: right;">-10</td><td style="text-align: right;">-0.51602</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">7</td><td style="text-align: right;">-12</td><td style="text-align: right;">0.0315958</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">8</td><td style="text-align: right;">10</td><td style="text-align: right;">-0.230829</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">9</td><td style="text-align: right;">-15</td><td style="text-align: right;">-0.421436</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">10</td><td style="text-align: right;">-18</td><td style="text-align: right;">-0.130946</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">11</td><td style="text-align: right;">14</td><td style="text-align: right;">0.0351552</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">12</td><td style="text-align: right;">-20</td><td style="text-align: right;">-0.111023</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">13</td><td style="text-align: right;">-22</td><td style="text-align: right;">-0.326108</td></tr><tr><td style="text-align: right;">⋮</td><td style="text-align: right;">⋮</td><td style="text-align: right;">⋮</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">28</td><td style="text-align: right;">17</td><td style="text-align: right;">-0.427755</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">29</td><td style="text-align: right;">5</td><td style="text-align: right;">0.0306633</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">30</td><td style="text-align: right;">19</td><td style="text-align: right;">-1.17776</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">31</td><td style="text-align: right;">8</td><td style="text-align: right;">-1.05488</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">32</td><td style="text-align: right;">11</td><td style="text-align: right;">0.204422</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">33</td><td style="text-align: right;">16</td><td style="text-align: right;">0.621485</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">34</td><td style="text-align: right;">1</td><td style="text-align: right;">-0.863985</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">35</td><td style="text-align: right;">2</td><td style="text-align: right;">0.542107</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">36</td><td style="text-align: right;">13</td><td style="text-align: right;">0.220229</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">37</td><td style="text-align: right;">4</td><td style="text-align: right;">0.81878</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">38</td><td style="text-align: right;">6</td><td style="text-align: right;">-1.02358</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">39</td><td style="text-align: right;">3</td><td style="text-align: right;">0.744526</td></tr></tbody></table></div>
+</div>
+</div>
+<p>This output is somewhat cryptic though, because each row refers to a node number and it’s unclear which are tips, which are internal nodes, and which node has what number. We can also get prediction intervals (sometimes called confidence intervals) but with the same cryptic ordering of nodes:</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predint</span>(asr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>39×2 Matrix{Float64}:
+ -0.522479    1.03745
+ -0.79781     0.394155
+ -0.790367    0.393041
+ -0.691256    0.893218
+ -0.657143    0.737805
+ -1.31901     0.286974
+ -0.828789    0.891981
+ -0.939729    0.478071
+ -1.12753     0.284662
+ -0.89236     0.630467
+ -0.671926    0.742237
+ -0.762605    0.540559
+ -1.00861     0.35639
+  ⋮          
+ -0.6454     -0.21011
+ -0.067455    0.128782
+ -1.56893    -0.786602
+ -1.206      -0.903747
+  0.0199769   0.388867
+  0.579511    0.663459
+ -0.944193   -0.783777
+  0.489289    0.594924
+  0.119035    0.321423
+  0.588948    1.04861
+ -1.26665    -0.780508
+  0.645395    0.843657</code></pre>
+</div>
+</div>
+</section>
+<section id="extant-species" class="level2">
+<h2 class="anchored" data-anchor-id="extant-species">extant species</h2>
+<p>First, we build a data frame to get this information in a more interpretable format for the tips. Below is one way to map the morph names in the order in which they appear in the data, to node numbers in the network:</p>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>tipnames_trait <span class="op">=</span> traits.morph</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">get_morph_nodenumber</span>(label)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  i <span class="op">=</span> <span class="fu">findfirst</span>(n <span class="op">-&gt;</span> n.name <span class="op">==</span> label, net.node)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  net.node[i].number</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>tipnumber <span class="op">=</span> [<span class="fu">get_morph_nodenumber</span>(label) for label <span class="kw">in</span> tipnames_trait]</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">hcat</span>(tipnames_trait, tipnumber)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>17×2 Matrix{Any}:
+ "aff._viscosum_sp._nov."   12
+ "apachianum"               15
+ "brandegeei"               18
+ "carneum"                   9
+ "chartaceum"               20
+ "confertum"                17
+ "delicatum"                 5
+ "eddyense"                 19
+ "elegans"                   8
+ "elusum"                   11
+ "foliosissimum"            16
+ "micranthum"                1
+ "occidentale_occidentale"   2
+ "pauciflorum"              13
+ "pectinatum"                4
+ "pulcherrimum_shastense"    6
+ "reptans"                   3</code></pre>
+</div>
+</div>
+<p>With this mapping, we can replace the node numbers by the morph names, and add other information from the trait data such as the sample size for each morph:</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>tipindex_asr <span class="op">=</span> <span class="fu">indexin</span>(tipnumber, asr_pred.nodeNumber)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>res_tip <span class="op">=</span> <span class="fu">DataFrame</span>(</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>      morph     <span class="op">=</span> tipnames_trait, <span class="co"># morph names, ordered as in the trait data frame</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>      samplesize<span class="op">=</span> traits.llength_n,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>      observed  <span class="op">=</span> traits.llength,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>      predicted <span class="op">=</span> asr_pred.condExpectation[tipindex_asr],</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>      low       <span class="op">=</span> <span class="fu">predint</span>(asr)[tipindex_asr,<span class="fl">1</span>],</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>      high      <span class="op">=</span> <span class="fu">predint</span>(asr)[tipindex_asr,<span class="fl">2</span>]</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+
+<div><div style="float: left;"><span>17×6 DataFrame</span></div><div style="clear: both;"></div></div><div class="data-frame" style="overflow-x: scroll;"><table class="data-frame table table-sm table-striped" style="margin-bottom: 6px;"><thead><tr class="header"><th class="rowNumber" style="font-weight: bold; text-align: right;">Row</th><th style="text-align: left;">morph</th><th style="text-align: left;">samplesize</th><th style="text-align: left;">observed</th><th style="text-align: left;">predicted</th><th style="text-align: left;">low</th><th style="text-align: left;">high</th></tr><tr class="subheader headerLastRow"><th class="rowNumber" style="font-weight: bold; text-align: right;"></th><th title="String31" style="text-align: left;">String31</th><th title="Int64" style="text-align: left;">Int64</th><th title="Float64" style="text-align: left;">Float64</th><th title="Float64" style="text-align: left;">Float64</th><th title="Float64" style="text-align: left;">Float64</th><th title="Float64" style="text-align: left;">Float64</th></tr></thead><tbody><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">1</td><td style="text-align: left;">aff._viscosum_sp._nov.</td><td style="text-align: right;">38</td><td style="text-align: right;">-1.371</td><td style="text-align: right;">-1.36551</td><td style="text-align: right;">-1.47801</td><td style="text-align: right;">-1.25302</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">2</td><td style="text-align: left;">apachianum</td><td style="text-align: right;">62</td><td style="text-align: right;">0.289364</td><td style="text-align: right;">0.287407</td><td style="text-align: right;">0.199311</td><td style="text-align: right;">0.375502</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">3</td><td style="text-align: left;">brandegeei</td><td style="text-align: right;">58</td><td style="text-align: right;">-0.67488</td><td style="text-align: right;">-0.673295</td><td style="text-align: right;">-0.764401</td><td style="text-align: right;">-0.582189</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">4</td><td style="text-align: left;">carneum</td><td style="text-align: right;">47</td><td style="text-align: right;">0.75653</td><td style="text-align: right;">0.753233</td><td style="text-align: right;">0.652009</td><td style="text-align: right;">0.854457</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">5</td><td style="text-align: left;">chartaceum</td><td style="text-align: right;">16</td><td style="text-align: right;">-1.61233</td><td style="text-align: right;">-1.59963</td><td style="text-align: right;">-1.77254</td><td style="text-align: right;">-1.42672</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">6</td><td style="text-align: left;">confertum</td><td style="text-align: right;">10</td><td style="text-align: right;">-0.430446</td><td style="text-align: right;">-0.427755</td><td style="text-align: right;">-0.6454</td><td style="text-align: right;">-0.21011</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">7</td><td style="text-align: left;">delicatum</td><td style="text-align: right;">50</td><td style="text-align: right;">0.0316277</td><td style="text-align: right;">0.0306633</td><td style="text-align: right;">-0.067455</td><td style="text-align: right;">0.128782</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">8</td><td style="text-align: left;">eddyense</td><td style="text-align: right;">3</td><td style="text-align: right;">-1.21937</td><td style="text-align: right;">-1.17776</td><td style="text-align: right;">-1.56893</td><td style="text-align: right;">-0.786602</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">9</td><td style="text-align: left;">elegans</td><td style="text-align: right;">21</td><td style="text-align: right;">-1.06016</td><td style="text-align: right;">-1.05488</td><td style="text-align: right;">-1.206</td><td style="text-align: right;">-0.903747</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">10</td><td style="text-align: left;">elusum</td><td style="text-align: right;">14</td><td style="text-align: right;">0.21314</td><td style="text-align: right;">0.204422</td><td style="text-align: right;">0.0199769</td><td style="text-align: right;">0.388867</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">11</td><td style="text-align: left;">foliosissimum</td><td style="text-align: right;">274</td><td style="text-align: right;">0.622095</td><td style="text-align: right;">0.621485</td><td style="text-align: right;">0.579511</td><td style="text-align: right;">0.663459</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">12</td><td style="text-align: left;">micranthum</td><td style="text-align: right;">75</td><td style="text-align: right;">-0.864849</td><td style="text-align: right;">-0.863985</td><td style="text-align: right;">-0.944193</td><td style="text-align: right;">-0.783777</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">13</td><td style="text-align: left;">occidentale_occidentale</td><td style="text-align: right;">173</td><td style="text-align: right;">0.542457</td><td style="text-align: right;">0.542107</td><td style="text-align: right;">0.489289</td><td style="text-align: right;">0.594924</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">14</td><td style="text-align: left;">pauciflorum</td><td style="text-align: right;">47</td><td style="text-align: right;">0.222039</td><td style="text-align: right;">0.220229</td><td style="text-align: right;">0.119035</td><td style="text-align: right;">0.321423</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">15</td><td style="text-align: left;">pectinatum</td><td style="text-align: right;">9</td><td style="text-align: right;">0.834157</td><td style="text-align: right;">0.81878</td><td style="text-align: right;">0.588948</td><td style="text-align: right;">1.04861</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">16</td><td style="text-align: left;">pulcherrimum_shastense</td><td style="text-align: right;">8</td><td style="text-align: right;">-1.04488</td><td style="text-align: right;">-1.02358</td><td style="text-align: right;">-1.26665</td><td style="text-align: right;">-0.780508</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">17</td><td style="text-align: left;">reptans</td><td style="text-align: right;">49</td><td style="text-align: right;">0.746643</td><td style="text-align: right;">0.744526</td><td style="text-align: right;">0.645395</td><td style="text-align: right;">0.843657</td></tr></tbody></table></div>
+</div>
+</div>
+<p>The predicted species means are close, but not exactly equal, to the observed means in each sample. This is because phylogenetic relatedness is used to share information across species. Little is shared for species with a large sample size, such as foliosissimum. But for species with a small sample size, such as eddyense, more information is borrowed from closely-related species. This is highlighted below:</p>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(<span class="op">:</span>morph <span class="op">=&gt;</span> n <span class="op">-&gt;</span> n <span class="kw">in</span> [<span class="st">"eddyense"</span>,<span class="st">"foliosissimum"</span>], res_tip)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+
+<div><div style="float: left;"><span>2×6 DataFrame</span></div><div style="clear: both;"></div></div><div class="data-frame" style="overflow-x: scroll;"><table class="data-frame table table-sm table-striped" style="margin-bottom: 6px;"><thead><tr class="header"><th class="rowNumber" style="font-weight: bold; text-align: right;">Row</th><th style="text-align: left;">morph</th><th style="text-align: left;">samplesize</th><th style="text-align: left;">observed</th><th style="text-align: left;">predicted</th><th style="text-align: left;">low</th><th style="text-align: left;">high</th></tr><tr class="subheader headerLastRow"><th class="rowNumber" style="font-weight: bold; text-align: right;"></th><th title="String31" style="text-align: left;">String31</th><th title="Int64" style="text-align: left;">Int64</th><th title="Float64" style="text-align: left;">Float64</th><th title="Float64" style="text-align: left;">Float64</th><th title="Float64" style="text-align: left;">Float64</th><th title="Float64" style="text-align: left;">Float64</th></tr></thead><tbody><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">1</td><td style="text-align: left;">eddyense</td><td style="text-align: right;">3</td><td style="text-align: right;">-1.21937</td><td style="text-align: right;">-1.17776</td><td style="text-align: right;">-1.56893</td><td style="text-align: right;">-0.786602</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">2</td><td style="text-align: left;">foliosissimum</td><td style="text-align: right;">274</td><td style="text-align: right;">0.622095</td><td style="text-align: right;">0.621485</td><td style="text-align: right;">0.579511</td><td style="text-align: right;">0.663459</td></tr></tbody></table></div>
+</div>
+</div>
+</section>
+<section id="ancestral-nodes" class="level2">
+<h2 class="anchored" data-anchor-id="ancestral-nodes">ancestral nodes</h2>
+<p>To look at ancestral states, it’s best to map the predictions and intervals onto the network. To do so, we will build a data frame containing annotations to be placed at nodes, then plot the network with this data frame as argument.</p>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>nodepred <span class="op">=</span> <span class="fu">expectationsPlot</span>(asr)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">first</span>(nodepred, <span class="fl">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+
+<div><div style="float: left;"><span>4×2 DataFrame</span></div><div style="clear: both;"></div></div><div class="data-frame" style="overflow-x: scroll;"><table class="data-frame table table-sm table-striped" style="margin-bottom: 6px;"><thead><tr class="header"><th class="rowNumber" style="font-weight: bold; text-align: right;">Row</th><th style="text-align: left;">nodeNumber</th><th style="text-align: left;">PredInt</th></tr><tr class="subheader headerLastRow"><th class="rowNumber" style="font-weight: bold; text-align: right;"></th><th title="Int64" style="text-align: left;">Int64</th><th title="AbstractString" style="text-align: left;">Abstract…</th></tr></thead><tbody><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">1</td><td style="text-align: right;">-5</td><td style="text-align: left;">0.26</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">2</td><td style="text-align: right;">-8</td><td style="text-align: left;">-0.2</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">3</td><td style="text-align: right;">7</td><td style="text-align: left;">-0.2</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">4</td><td style="text-align: right;">-6</td><td style="text-align: left;">0.1</td></tr></tbody></table></div>
+</div>
+</div>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>R<span class="st">"par"</span>(mar<span class="op">=</span>[<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>]);</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(net, nodelabel<span class="op">=</span>nodepred, nodecex<span class="op">=</span><span class="fl">0.8</span>, tipoffset<span class="op">=</span><span class="fl">0.1</span>, xlim<span class="op">=</span>[<span class="fl">0</span>,<span class="fl">13</span>]);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="fig-3-asrmean" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="topic3-asr_files/figure-html/fig-3-asrmean-output-1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;1: ancestral state reconstruction: species means conditional on data</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>nodeint <span class="op">=</span> <span class="fu">predintPlot</span>(asr)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">first</span>(nodeint, <span class="fl">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+
+<div><div style="float: left;"><span>4×2 DataFrame</span></div><div style="clear: both;"></div></div><div class="data-frame" style="overflow-x: scroll;"><table class="data-frame table table-sm table-striped" style="margin-bottom: 6px;"><thead><tr class="header"><th class="rowNumber" style="font-weight: bold; text-align: right;">Row</th><th style="text-align: left;">nodeNumber</th><th style="text-align: left;">PredInt</th></tr><tr class="subheader headerLastRow"><th class="rowNumber" style="font-weight: bold; text-align: right;"></th><th title="Int64" style="text-align: left;">Int64</th><th title="AbstractString" style="text-align: left;">Abstract…</th></tr></thead><tbody><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">1</td><td style="text-align: right;">-5</td><td style="text-align: left;">[-0.52, 1.04]</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">2</td><td style="text-align: right;">-8</td><td style="text-align: left;">[-0.8, 0.39]</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">3</td><td style="text-align: right;">7</td><td style="text-align: left;">[-0.79, 0.39]</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">4</td><td style="text-align: right;">-6</td><td style="text-align: left;">[-0.69, 0.89]</td></tr></tbody></table></div>
+</div>
+</div>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>R<span class="st">"par"</span>(mar<span class="op">=</span>[<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>]);</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(net, nodelabel<span class="op">=</span>nodeint, nodecex<span class="op">=</span><span class="fl">0.7</span>, tipoffset<span class="op">=</span><span class="fl">0.1</span>, xlim<span class="op">=</span>[<span class="op">-</span><span class="fl">0.1</span>,<span class="fl">13</span>]);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="fig-3-asrint" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="topic3-asr_files/figure-html/fig-3-asrint-output-1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2: ancestral state reconstruction: 95% prediction interval</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./topic2-phyloANOVA.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Phylogenetic regression</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./topic4-impactgeneflow.html" class="pagination-link">
+        <span class="nav-page-text">Impact of gene flow</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

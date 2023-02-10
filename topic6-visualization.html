@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Comparative methods on networks - Visualization</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./topic5-discrete.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Comparative methods on networks</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="./index.html" aria-current="page">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="http://crsl4.github.io/PhyloNetworks.jl/latest/">
+ <span class="menu-text">PhyloNetworks</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/cecileane/networkPCM-workshop"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Visualization</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation docked overflow-auto">
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Home</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topic-overview.html" class="sidebar-item-text sidebar-link">Workshop overview</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topic1-netcalibration.html" class="sidebar-item-text sidebar-link">Network calibration</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topic2-phyloANOVA.html" class="sidebar-item-text sidebar-link">Phylogenetic regression</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topic3-asr.html" class="sidebar-item-text sidebar-link">Ancestral state reconstruction</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topic4-impactgeneflow.html" class="sidebar-item-text sidebar-link">Impact of gene flow</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topic5-discrete.html" class="sidebar-item-text sidebar-link">Discrete trait</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topic6-visualization.html" class="sidebar-item-text sidebar-link active">Visualization</a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#discrete-trait-data-at-the-tips" id="toc-discrete-trait-data-at-the-tips" class="nav-link active" data-scroll-target="#discrete-trait-data-at-the-tips">discrete trait data at the tips</a></li>
+  <li><a href="#ancestral-probabilities" id="toc-ancestral-probabilities" class="nav-link" data-scroll-target="#ancestral-probabilities">ancestral probabilities</a></li>
+  <li><a href="#continuous-trait-data-at-the-tips" id="toc-continuous-trait-data-at-the-tips" class="nav-link" data-scroll-target="#continuous-trait-data-at-the-tips">continuous trait data at the tips</a></li>
+  <li><a href="#ancestral-state-for-a-continuous-trait" id="toc-ancestral-state-for-a-continuous-trait" class="nav-link" data-scroll-target="#ancestral-state-for-a-continuous-trait">ancestral state for a continuous trait</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/cecileane/networkPCM-workshop/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Visualization</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell" data-execution_count="1">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># code from prior sections</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CSV</span>, <span class="bu">DataFrames</span>, <span class="bu">PhyloNetworks</span>, <span class="bu">PhyloPlots</span>, <span class="bu">RCall</span>, <span class="bu">StatsBase</span>, <span class="bu">StatsModels</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> <span class="fu">readTopology</span>(<span class="st">"data/polemonium_network_calibrated.phy"</span>);</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> tip <span class="kw">in</span> net.node tip.name <span class="op">=</span> <span class="fu">replace</span>(tip.name, <span class="st">r"_2</span><span class="sc">$</span><span class="st">" =&gt; </span>s<span class="st">""); end</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>traits <span class="op">=</span> CSV.<span class="fu">read</span>(<span class="st">"data/polemonium_traits_morph.csv"</span>, DataFrame)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">subset!</span>(traits, <span class="op">:</span>morph <span class="op">=&gt;</span> <span class="fu">ByRow</span>(<span class="fu">in</span>(<span class="fu">tipLabels</span>(net))))</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>dat <span class="op">=</span> <span class="fu">DataFrame</span>(morph <span class="op">=</span> <span class="fu">String</span>.(traits[<span class="op">:</span>, <span class="op">:</span>morph]),</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>                elevation <span class="op">=</span> <span class="fu">map</span>( x <span class="op">-&gt;</span> (x <span class="op">.&gt;</span> <span class="fl">2.3</span> ? <span class="st">"hi"</span> <span class="op">:</span> <span class="st">"lo"</span>), traits.elevation))</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>fit <span class="op">=</span> <span class="fu">fitdiscrete</span>(net, <span class="op">:</span>ERSM, dat.morph, <span class="fu">select</span>(dat, <span class="op">:</span>elevation))</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>asr <span class="op">=</span> <span class="fu">ancestralStateReconstruction</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Many visualizations are interesting, and they are essential for communication. We give here a few examples. For each example, we suggest that you go step by step and inspect each element in the code. The more the code makes sense, the more we can customize it later for our own needs on other data sets.</p>
+<section id="discrete-trait-data-at-the-tips" class="level2">
+<h2 class="anchored" data-anchor-id="discrete-trait-data-at-the-tips">discrete trait data at the tips</h2>
+<p>Following the example of a <a href="./topic5-discrete.html">discrete</a> trait, of high or low elevation, let’s visualize the data at the tips.</p>
+<div class="cell" data-execution_count="2">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>R<span class="st">"par"</span>(mar<span class="op">=</span>[<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>]);</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># plot and save the "res"ult to get point coordinates, to use for adding annotation on top</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>res <span class="op">=</span> <span class="fu">plot</span>(net, tipoffset<span class="op">=</span><span class="fl">0.5</span>, xlim<span class="op">=</span>[<span class="fl">0.5</span>,<span class="fl">16</span>]);</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>res[<span class="fl">1</span><span class="op">:</span><span class="fl">4</span>] <span class="co"># x and y limits</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>res[<span class="fl">13</span>]  <span class="co"># info to add node annotations</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>res[<span class="fl">14</span>]  <span class="co"># info to add edge annotations</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># find the order "o" in which species from data are listed in the network -- and in res</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>o <span class="op">=</span> [<span class="fu">findfirst</span>(<span class="fu">isequal</span>(tax), dat.morph) for tax <span class="kw">in</span> <span class="fu">tipLabels</span>(net)]</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>dat.morph[o] <span class="op">==</span> <span class="fu">tipLabels</span>(net) <span class="co"># should be true, if order o is as intended</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>tips <span class="op">=</span> res[<span class="fl">13</span>][!,<span class="op">:</span>lea]</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>dat.morph[o] <span class="op">==</span> res[<span class="fl">13</span>][tips,<span class="op">:</span>name] <span class="co"># should be true</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co"># next: add grey &amp; red points at the leaves</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>tip_col <span class="op">=</span> <span class="fu">map</span>(x <span class="op">-&gt;</span> (x<span class="op">==</span><span class="st">"lo"</span> ? <span class="st">"grey"</span> <span class="op">:</span> <span class="st">"red"</span>), dat.elevation[o])</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>R<span class="st">"points"</span>(</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>res[<span class="fl">13</span>][tips,<span class="op">:</span>x] <span class="op">.+</span><span class="fl">0.1</span>,</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span>res[<span class="fl">13</span>][tips,<span class="op">:</span>y],</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    pch<span class="op">=</span><span class="fl">16</span>, col<span class="op">=</span>tip_col, cex<span class="op">=</span><span class="fl">1.5</span>);</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co"># next: add a legend to say which color is for which state</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>R<span class="st">"legend"</span>(x<span class="op">=</span><span class="fl">1</span>, y<span class="op">=</span><span class="fl">19</span>, legend<span class="op">=</span>[<span class="st">"hi"</span>,<span class="st">"lo"</span>], pch<span class="op">=</span><span class="fl">16</span>,</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    col<span class="op">=</span>[<span class="st">"red"</span>,<span class="st">"grey"</span>], title<span class="op">=</span><span class="st">"elevation"</span>,</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    bty<span class="op">=</span><span class="st">"n"</span>, var<span class="st">"title.adj"</span><span class="op">=</span><span class="fl">0</span>); <span class="co"># var"" to allow for a dot in the variable name: R's fault...</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co"># next: add γ's for gene flow edges</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>hybminor <span class="op">=</span> res[<span class="fl">14</span>].min</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>hybdf <span class="op">=</span> res[<span class="fl">14</span>][hybminor, [<span class="op">:</span>x,<span class="op">:</span>y,<span class="op">:</span>gam]]</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>R<span class="st">"text"</span>(hybdf.x <span class="op">.-</span> <span class="fl">0.1</span>, hybdf.y <span class="op">+</span> <span class="fl">0.5</span><span class="op">.*</span>[<span class="op">-</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>], hybdf.gam, col<span class="op">=</span><span class="st">"deepskyblue"</span>, cex<span class="op">=</span><span class="fl">0.75</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-6-tips-discrete" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="topic6-visualization_files/figure-html/fig-6-tips-discrete-output-1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;1: showing a discrete trait at the tips</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="ancestral-probabilities" class="level2">
+<h2 class="anchored" data-anchor-id="ancestral-probabilities">ancestral probabilities</h2>
+<p>Now let’s go one step further and visualize the probabilities of “high” and “low” elevation (as a binary trait) from this <a href="./topic5-discrete.html#fig-5-asr1">figure</a>(b) with pie charts instead of boring hard-to-read numbers.</p>
+<div class="cell" data-execution_count="3">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>colnames <span class="op">=</span> <span class="fu">names</span>(asr)[<span class="fl">3</span><span class="op">:</span><span class="kw">end</span>] <span class="co"># to get the correct state - probability match</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># create a new column in the asr data frame, filled with the empty string ""</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>asr[!,<span class="op">:</span>fake] <span class="op">.=</span> <span class="st">""</span>; <span class="co"># to add fake internal node labels later: and extract their positions</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>asr <span class="co"># just to check</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>coltrait <span class="op">=</span> [<span class="st">"red"</span>,<span class="st">"grey"</span>] <span class="co"># or anything else: names that R knows how to interpret</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># start the plot</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>R<span class="st">"par"</span>(mar<span class="op">=</span>[<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>]);</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>res <span class="op">=</span> <span class="fu">plot</span>(fit.net, tipoffset<span class="op">=</span><span class="fl">0.5</span>, xlim<span class="op">=</span>[<span class="fl">0.5</span>,<span class="fl">16</span>], arrowlen<span class="op">=</span><span class="fl">0.3</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>           nodelabel <span class="op">=</span> asr[<span class="op">:</span>,[<span class="op">:</span>nodenumber, <span class="op">:</span>fake]]);</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>ndf <span class="op">=</span> res[<span class="fl">13</span>] <span class="co"># had locations of internal nodes, this time</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co"># add pie charts, using locations of internal nodes</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu">nrow</span>(asr) <span class="co"># loop over each row in the ancestral state reconstruction data frame</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  ii <span class="op">=</span> <span class="fu">findfirst</span>(<span class="fu">isequal</span>(<span class="fu">string</span>(asr[!,<span class="op">:</span>nodenumber][i])), ndf[!,<span class="op">:</span>num]);</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  colpp <span class="op">=</span> <span class="fu">Vector</span>(asr[i,colnames]);</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  R<span class="st">"ape::floating.pie.asp"</span>(ndf[ii,<span class="op">:</span>x], ndf[ii,<span class="op">:</span>y], colpp,</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>                           radius<span class="op">=</span><span class="fl">0.2</span>, col<span class="op">=</span>coltrait);</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co"># add legend with correct mapping of color -&gt; state</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>R<span class="st">"legend"</span>(x<span class="op">=</span><span class="fl">1</span>, y<span class="op">=</span><span class="fl">19</span>, legend<span class="op">=</span>colnames, pch<span class="op">=</span><span class="fl">21</span>, var<span class="st">"pt.bg"</span><span class="op">=</span>coltrait,</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>          bty<span class="op">=</span><span class="st">"n"</span>, title<span class="op">=</span><span class="st">"elevation"</span>, var<span class="st">"title.adj"</span><span class="op">=</span><span class="fl">0</span>, var<span class="st">"pt.cex"</span><span class="op">=</span><span class="fl">1.5</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-6-asr-discrete" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="topic6-visualization_files/figure-html/fig-6-asr-discrete-output-1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2: pie charts to show ancestral state probabilities</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="continuous-trait-data-at-the-tips" class="level2">
+<h2 class="anchored" data-anchor-id="continuous-trait-data-at-the-tips">continuous trait data at the tips</h2>
+<p>Here is an example to vizualize the actual elevation values, at the tips.</p>
+<div class="cell" data-execution_count="4">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>R<span class="st">"par"</span>(mar<span class="op">=</span>[<span class="fl">2</span>,<span class="fl">0</span>,<span class="fl">1.5</span>,<span class="fl">0</span>]);</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the network with a large tip offset to leave space for bars</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>res <span class="op">=</span> <span class="fu">plot</span>(net, tipoffset<span class="op">=</span><span class="fl">2.2</span>, xlim<span class="op">=</span>[<span class="fl">0.5</span>,<span class="fl">17</span>]);</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># create a standardized version of elevation, such that 0 corresponds to the mean,</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># and such that the range covers an interval of length 2:</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># for the bars to fit between the tips and the taxon names</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>o <span class="op">=</span> [<span class="fu">findfirst</span>(<span class="fu">isequal</span>(tax), traits.morph) for tax <span class="kw">in</span> res[<span class="fl">13</span>].name] <span class="co"># ordering</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>intervallength <span class="op">=</span> <span class="fl">2</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>std_elev <span class="op">=</span> intervallength <span class="op">.*</span> <span class="fu">standardize</span>(UnitRangeTransform, traits.elevation[o])</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>std_elev <span class="op">.-=</span> <span class="fu">mean</span>(std_elev) <span class="co"># now mean = 0, interval length still as desired</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>linecol <span class="op">=</span> [(el <span class="op">&lt;</span> <span class="fl">0</span> ? <span class="st">"grey"</span> <span class="op">:</span> <span class="st">"red"</span>) for el <span class="kw">in</span> std_elev] <span class="co"># grey if elevation &lt; mean, red if elevation &gt; mean</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> <span class="fu">minimum</span>(std_elev)    <span class="co"># new minimum elevation, after "standardization"</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>x0 <span class="op">=</span> res[<span class="fl">13</span>][<span class="fl">1</span>,<span class="op">:</span>x] <span class="op">+</span> <span class="fl">0.1</span> <span class="co"># x where the smallest bar should extend</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>xmean <span class="op">=</span> x0 <span class="op">-</span> m           <span class="co"># x where the mean value will go</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co"># create the bars</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>R<span class="st">"segments"</span>(x0 <span class="op">=</span> xmean, x1 <span class="op">=</span> xmean <span class="op">.+</span> std_elev,</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>            y0<span class="op">=</span>res[<span class="fl">13</span>].y, col<span class="op">=</span>linecol,</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>            lwd<span class="op">=</span><span class="fl">10</span>, lend<span class="op">=</span><span class="fl">1</span>); <span class="co"># thick lines, line ends of "butt" type</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co"># label the horizontal axis to show the original min and max elevations</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>min_evel, max_elev <span class="op">=</span> <span class="fu">round</span>.(<span class="fu">extrema</span>(traits.elevation[o]), digits<span class="op">=</span><span class="fl">2</span>);</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>R<span class="st">"axis"</span>(at<span class="op">=</span>[x0, x0<span class="op">+</span>intervallength],</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>        labels<span class="op">=</span><span class="fu">round</span>.([min_evel,max_elev], digits<span class="op">=</span><span class="fl">2</span>),</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>        side<span class="op">=</span><span class="fl">1</span>, line<span class="op">=-</span><span class="fl">0.5</span>, tck<span class="op">=-</span><span class="fl">0.01</span>);</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>R<span class="st">"text"</span>(x<span class="op">=</span>x0, y<span class="op">=</span><span class="fl">21</span>, <span class="st">"elevation (km)"</span>, adj<span class="op">=</span><span class="fl">0</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-6-tips-continuous" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="topic6-visualization_files/figure-html/fig-6-tips-continuous-output-1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;3: bar plot to visualize continuous traits at the tips. red: above average. grey: below average</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="ancestral-state-for-a-continuous-trait" class="level2">
+<h2 class="anchored" data-anchor-id="ancestral-state-for-a-continuous-trait">ancestral state for a continuous trait</h2>
+<p>Let’s change and look at log-leaflet area this time. We can use a color gradient to visualize ancestral state reconstructions. The issue to keep in mind, when reading such a visualization, and that we don’t see confidence intervals, and those tend to be wider and wider as we move back in time toward the root (assuming data on extant taxa only).</p>
+<div class="cell" data-execution_count="5">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit the model, get ancestral state predictions</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>fit_larea <span class="op">=</span> <span class="fu">phylolm</span>(<span class="pp">@formula</span>(larea <span class="op">~</span> <span class="fl">1</span>), traits, net, tipnames<span class="op">=:</span>morph,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                    withinspecies_var<span class="op">=</span><span class="cn">true</span>, y_mean_std<span class="op">=</span><span class="cn">true</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>asr_larea <span class="op">=</span> <span class="fu">expectations</span>(<span class="fu">ancestralStateReconstruction</span>(fit_larea))</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>asr_larea[!,<span class="op">:</span>fake] <span class="op">.=</span> <span class="st">""</span>; <span class="co"># fake empty labels</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># convert numerical ancestral states to colors, using a palette</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>asr_larea_01 <span class="op">=</span> <span class="fu">standardize</span>(UnitRangeTransform, asr_larea.condExpectation) <span class="co"># values ranging in 0-1</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="pp">@rlibrary</span> viridis</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>mypalette <span class="op">=</span> <span class="fu">rcopy</span>(<span class="fu">viridis</span>(<span class="fl">256</span>)) <span class="co"># 256 possible colors in the palette</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">CategoricalArrays</span>: cut</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>breaks <span class="op">=</span> [i<span class="op">/</span><span class="fl">256</span> for i <span class="kw">in</span> <span class="fl">0</span><span class="op">:</span><span class="fl">256</span>]</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>asr_larea_index <span class="op">=</span> <span class="fu">convert</span>(<span class="dt">Vector</span>{<span class="dt">Int</span>}, <span class="fu">cut</span>(asr_larea_01, breaks; extend<span class="op">=</span><span class="cn">true</span>, labels<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">256</span>))</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>asr_larea_colr <span class="op">=</span> mypalette[asr_larea_index]</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co"># start the plot</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>R<span class="st">"par"</span>(mar<span class="op">=</span>[<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>]);</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>res <span class="op">=</span> <span class="fu">plot</span>(net, tipoffset<span class="op">=</span><span class="fl">0.5</span>, xlim<span class="op">=</span>[<span class="fl">0.5</span>,<span class="fl">16</span>],</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>           nodelabel <span class="op">=</span> asr_larea[<span class="op">:</span>,[<span class="op">:</span>nodeNumber, <span class="op">:</span>fake]]);</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="co"># find order to match tips between asr_larea and res[13]</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>ndf <span class="op">=</span> res[<span class="fl">13</span>]</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>o <span class="op">=</span> [<span class="fu">findfirst</span>(<span class="fu">isequal</span>(nn), asr_larea.nodeNumber) for nn <span class="kw">in</span> <span class="fu">parse</span>.(<span class="dt">Int</span>, ndf.num)]</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>asr_larea.nodeNumber[o] <span class="op">==</span> <span class="fu">parse</span>.(<span class="dt">Int</span>, ndf.num) <span class="co"># should be true</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="co"># add the colored circles</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>R<span class="st">"points"</span>(x<span class="op">=</span>ndf.x, y<span class="op">=</span>ndf.y, pch<span class="op">=</span><span class="fl">16</span>, col<span class="op">=</span>asr_larea_colr[o], cex<span class="op">=</span><span class="fl">1.5</span>);</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="co"># add legend</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>m,M <span class="op">=</span> <span class="fu">string</span>.(<span class="fu">round</span>.(<span class="fu">extrema</span>(asr_larea.condExpectation), digits<span class="op">=</span><span class="fl">2</span>))</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>R<span class="st">"legend"</span>(x<span class="op">=</span><span class="fl">0</span>, y<span class="op">=</span><span class="fl">19</span>, bty<span class="op">=</span><span class="st">"n"</span>, adj<span class="op">=</span><span class="fl">0</span>, var<span class="st">"y.intersp"</span><span class="op">=</span><span class="fl">0.5</span>, border<span class="op">=</span><span class="st">"NA"</span>,</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>    legend <span class="op">=</span> [m,<span class="st">""</span>,<span class="st">""</span>,<span class="st">""</span>,M], fill <span class="op">=</span> mypalette[[<span class="fl">1</span>, <span class="fl">64</span>, <span class="fl">128</span>, <span class="fl">192</span>, <span class="fl">256</span>]]);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-6-asr-continuous" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="topic6-visualization_files/figure-html/fig-6-asr-continuous-output-1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;4: prediction of mean log-leaflet area (not showing uncertainty)</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./topic5-discrete.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Discrete trait</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

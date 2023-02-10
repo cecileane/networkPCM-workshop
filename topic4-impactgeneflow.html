@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Comparative methods on networks - Impact of gene flow</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./topic5-discrete.html" rel="next">
+<link href="./topic3-asr.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Comparative methods on networks</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="./index.html" aria-current="page">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="http://crsl4.github.io/PhyloNetworks.jl/latest/">
+ <span class="menu-text">PhyloNetworks</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/cecileane/networkPCM-workshop"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Impact of gene flow</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation docked overflow-auto">
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Home</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topic-overview.html" class="sidebar-item-text sidebar-link">Workshop overview</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topic1-netcalibration.html" class="sidebar-item-text sidebar-link">Network calibration</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topic2-phyloANOVA.html" class="sidebar-item-text sidebar-link">Phylogenetic regression</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topic3-asr.html" class="sidebar-item-text sidebar-link">Ancestral state reconstruction</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topic4-impactgeneflow.html" class="sidebar-item-text sidebar-link active">Impact of gene flow</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topic5-discrete.html" class="sidebar-item-text sidebar-link">Discrete trait</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topic6-visualization.html" class="sidebar-item-text sidebar-link">Visualization</a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#network-model-versus-tree-model" id="toc-network-model-versus-tree-model" class="nav-link active" data-scroll-target="#network-model-versus-tree-model">network model versus tree model</a></li>
+  <li><a href="#transgressive-evolution-at-reticulations" id="toc-transgressive-evolution-at-reticulations" class="nav-link" data-scroll-target="#transgressive-evolution-at-reticulations">transgressive evolution at reticulations</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/cecileane/networkPCM-workshop/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Impact of gene flow</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell" data-execution_count="1">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># code from prior sections</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CSV</span>, <span class="bu">DataFrames</span>, <span class="bu">PhyloNetworks</span>, <span class="bu">PhyloPlots</span>, <span class="bu">RCall</span>, <span class="bu">StatsBase</span>, <span class="bu">StatsModels</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> <span class="fu">readTopology</span>(<span class="st">"data/polemonium_network_calibrated.phy"</span>);</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> tip <span class="kw">in</span> net.node tip.name <span class="op">=</span> <span class="fu">replace</span>(tip.name, <span class="st">r"_2</span><span class="sc">$</span><span class="st">" =&gt; </span>s<span class="st">""); end</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>traits <span class="op">=</span> CSV.<span class="fu">read</span>(<span class="st">"data/polemonium_traits_morph.csv"</span>, DataFrame)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">subset!</span>(traits, <span class="op">:</span>morph <span class="op">=&gt;</span> <span class="fu">ByRow</span>(<span class="fu">in</span>(<span class="fu">tipLabels</span>(net))));</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>What happened to the trait during gene flow? We can ask this question in various ways.</p>
+<section id="network-model-versus-tree-model" class="level2">
+<h2 class="anchored" data-anchor-id="network-model-versus-tree-model">network model versus tree model</h2>
+<p>First, we can investigate if the network (with gene flow) is a better explanation for the trait evolution than a tree. Several trees are displayed in the network, but the tree that represents most of the genome has the “major” hybrid edges, those with inheritance γ&gt;0.5. We can delete all the “minor” hybrid edges (with γ&lt;0.5) as shown below.</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>tree <span class="op">=</span> <span class="fu">majorTree</span>(net)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>R<span class="st">"par"</span>(mar<span class="op">=</span>[<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>]);</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(tree, tipoffset<span class="op">=</span><span class="fl">0.05</span>, useedgelength<span class="op">=</span><span class="cn">true</span>, xlim<span class="op">=</span>[<span class="fl">1</span>,<span class="fl">2.5</span>]);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="fig-4-majortree" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="topic4-impactgeneflow_files/figure-html/fig-4-majortree-output-1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;1: major tree, drawn proportional to edge lengths</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>fit_net <span class="op">=</span> <span class="fu">phylolm</span>(<span class="pp">@formula</span>(llength <span class="op">~</span> elevation <span class="op">+</span> lat), traits, net;</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                  tipnames<span class="op">=:</span>morph, withinspecies_var<span class="op">=</span><span class="cn">true</span>, y_mean_std<span class="op">=</span><span class="cn">true</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>fit_tree <span class="op">=</span> <span class="fu">phylolm</span>(<span class="pp">@formula</span>(llength <span class="op">~</span> elevation <span class="op">+</span> lat), traits, tree;</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>                  tipnames<span class="op">=:</span>morph, withinspecies_var<span class="op">=</span><span class="cn">true</span>, y_mean_std<span class="op">=</span><span class="cn">true</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">aic</span>(fit_net), <span class="fu">aic</span>(fit_tree)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>(674.5023241225919, 675.0140696456297)</code></pre>
+</div>
+</div>
+<p>Which model seems to fit best: network or major tree?</p>
+<p>Note that this network-vs-tree question applies to the phylogenetic correlation of <em>residuals</em> here. It could be gene flow had an impact on the geographic distribution at reticulations, which impacted evelation and latitude. In that case, this impact would be explained by the predictors that we used, and would not be seen here. But it could appear from a model without any predictors (something you could run if interested).</p>
+<p>We can check to see how much of a difference it makes on coefficients:</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coeftable</span>(fit_net)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<table class="table table-sm table-striped">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 15%">
+<col style="width: 15%">
+<col style="width: 8%">
+<col style="width: 12%">
+<col style="width: 14%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Coef.</th>
+<th style="text-align: right;">Std. Error</th>
+<th style="text-align: right;">t</th>
+<th style="text-align: left;">Pr(&gt;</th>
+<th style="text-align: left;">t</th>
+<th style="text-align: right;">)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">4.22609</td>
+<td style="text-align: right;">1.81331</td>
+<td style="text-align: right;">2.33</td>
+<td style="text-align: left;">0.0352</td>
+<td style="text-align: left;">0.336929</td>
+<td style="text-align: right;">8.11526</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">elevation</td>
+<td style="text-align: right;">-0.585523</td>
+<td style="text-align: right;">0.16023</td>
+<td style="text-align: right;">-3.65</td>
+<td style="text-align: left;">0.0026</td>
+<td style="text-align: left;">-0.929181</td>
+<td style="text-align: right;">-0.241865</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">lat</td>
+<td style="text-align: right;">-0.0804964</td>
+<td style="text-align: right;">0.0391184</td>
+<td style="text-align: right;">-2.06</td>
+<td style="text-align: left;">0.0587</td>
+<td style="text-align: left;">-0.164397</td>
+<td style="text-align: right;">0.00340418</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coeftable</span>(fit_tree)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<table class="table table-sm table-striped">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 14%">
+<col style="width: 15%">
+<col style="width: 9%">
+<col style="width: 12%">
+<col style="width: 14%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Coef.</th>
+<th style="text-align: right;">Std. Error</th>
+<th style="text-align: right;">t</th>
+<th style="text-align: left;">Pr(&gt;</th>
+<th style="text-align: left;">t</th>
+<th style="text-align: right;">)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">4.11819</td>
+<td style="text-align: right;">1.81426</td>
+<td style="text-align: right;">2.27</td>
+<td style="text-align: left;">0.0395</td>
+<td style="text-align: left;">0.226996</td>
+<td style="text-align: right;">8.00938</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">elevation</td>
+<td style="text-align: right;">-0.602781</td>
+<td style="text-align: right;">0.155119</td>
+<td style="text-align: right;">-3.89</td>
+<td style="text-align: left;">0.0016</td>
+<td style="text-align: left;">-0.935479</td>
+<td style="text-align: right;">-0.270083</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">lat</td>
+<td style="text-align: right;">-0.077632</td>
+<td style="text-align: right;">0.0392076</td>
+<td style="text-align: right;">-1.98</td>
+<td style="text-align: left;">0.0677</td>
+<td style="text-align: left;">-0.161724</td>
+<td style="text-align: right;">0.00645985</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>or how much difference it makes on the estimated variance parameters:</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>.((<span class="fu">sigma2_phylo</span>(fit_net), <span class="fu">sigma2_phylo</span>(fit_tree)), sigdigits<span class="op">=</span><span class="fl">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<pre><code>(0.5381, 0.5319)</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>.((<span class="fu">sigma2_within</span>(fit_net), <span class="fu">sigma2_within</span>(fit_tree)), sigdigits<span class="op">=</span><span class="fl">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>(0.1075, 0.1075)</code></pre>
+</div>
+</div>
+<p>Out of curiousity, we can do this again with the most “minor” tree: where major hybrid edges are deleted and all minor hybrid edges are kept.</p>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>minortree <span class="op">=</span> <span class="fu">deepcopy</span>(net)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> minortree.numHybrids <span class="op">&gt;</span> <span class="fl">0</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="cn">e</span> <span class="kw">in</span> minortree.edge</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="cn">e</span>.hybrid <span class="op">&amp;&amp;</span> <span class="cn">e</span>.isMajor</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>      PhyloNetworks.<span class="fu">deletehybridedge!</span>(minortree, <span class="cn">e</span>) <span class="co"># changes the list of edges</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>      <span class="cf">break</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co"># plot(minortree, tipoffset=0.05, useedgelength=true, xlim=[1,2.5]);</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>fit_minor <span class="op">=</span> <span class="fu">phylolm</span>(<span class="pp">@formula</span>(llength <span class="op">~</span> elevation <span class="op">+</span> lat), traits, minortree;</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>                  tipnames<span class="op">=:</span>morph, withinspecies_var<span class="op">=</span><span class="cn">true</span>, y_mean_std<span class="op">=</span><span class="cn">true</span>)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="fu">aic</span>(fit_net), <span class="fu">aic</span>(fit_tree), <span class="fu">aic</span>(fit_minor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<pre><code>(674.5023241225919, 675.0140696456297, 674.7890396071382)</code></pre>
+</div>
+</div>
+</section>
+<section id="transgressive-evolution-at-reticulations" class="level2">
+<h2 class="anchored" data-anchor-id="transgressive-evolution-at-reticulations">transgressive evolution at reticulations</h2>
+<p>Another question we may ask is whether the trait at reticulations deviates from the weighted average of its parent populations (immediately before gene flow). Such would be the case if a hybrid species’s trait is outside the range of its parents. This “transgressive” evolution can be modelled with a shift in the trait along the edge just below the reticulation. This shift quantifies the difference between the trait at the hybrid node and the weighted average of the immediate parents.</p>
+<p>The code below builds a data frame with 1 predictor column per reticulation: this column quantifies the effect of a transgressive shift on each taxon in the phylogeny.</p>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>df_shift <span class="op">=</span> <span class="fu">regressorHybrid</span>(net)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+
+<div><div style="float: left;"><span>17×5 DataFrame</span></div><div style="clear: both;"></div></div><div class="data-frame" style="overflow-x: scroll;"><table class="data-frame table table-sm table-striped" style="margin-bottom: 6px;"><thead><tr class="header"><th class="rowNumber" style="font-weight: bold; text-align: right;">Row</th><th style="text-align: left;">shift_8</th><th style="text-align: left;">shift_18</th><th style="text-align: left;">shift_25</th><th style="text-align: left;">tipNames</th><th style="text-align: left;">sum</th></tr><tr class="subheader headerLastRow"><th class="rowNumber" style="font-weight: bold; text-align: right;"></th><th title="Float64" style="text-align: left;">Float64</th><th title="Float64" style="text-align: left;">Float64</th><th title="Float64" style="text-align: left;">Float64</th><th title="String" style="text-align: left;">String</th><th title="Float64" style="text-align: left;">Float64</th></tr></thead><tbody><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">1</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: left;">micranthum</td><td style="text-align: right;">0.0</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">2</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: left;">occidentale_occidentale</td><td style="text-align: right;">0.0</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">3</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: left;">reptans</td><td style="text-align: right;">0.0</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">4</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: left;">pectinatum</td><td style="text-align: right;">0.0</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">5</td><td style="text-align: right;">1.0</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: left;">delicatum</td><td style="text-align: right;">1.0</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">6</td><td style="text-align: right;">1.0</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: left;">pulcherrimum_shastense</td><td style="text-align: right;">1.0</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">7</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: left;">elegans</td><td style="text-align: right;">0.0</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">8</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: left;">carneum</td><td style="text-align: right;">0.0</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">9</td><td style="text-align: right;">0.0</td><td style="text-align: right;">1.0</td><td style="text-align: right;">0.0</td><td style="text-align: left;">elusum</td><td style="text-align: right;">1.0</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">10</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: left;">aff._viscosum_sp._nov.</td><td style="text-align: right;">0.0</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">11</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: left;">pauciflorum</td><td style="text-align: right;">0.0</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">12</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: right;">1.0</td><td style="text-align: left;">apachianum</td><td style="text-align: right;">1.0</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">13</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: left;">foliosissimum</td><td style="text-align: right;">0.0</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">14</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: left;">confertum</td><td style="text-align: right;">0.0</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">15</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: left;">brandegeei</td><td style="text-align: right;">0.0</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">16</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: left;">eddyense</td><td style="text-align: right;">0.0</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">17</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: left;">chartaceum</td><td style="text-align: right;">0.0</td></tr></tbody></table></div>
+</div>
+</div>
+<p>To know which shift corresponds to which reticulation, we could plot the network and ask to see the edge numbers, as shown below.</p>
+<p>But the data frame shows us which tips are impacted by each reticulation: - transgressive shift on edge 8: reticulation leading to delicatum and pulcherrimum_shastense, - shift on edge 18: below reticulation leading to elusum - shift on edge 25: below reticulation leading to apachianum. The values in this data frame are the proportion of the genome that each species inherited from the reticulation, based on the network’s γ values. In our case, they are only 0 or 1, but the values could be in between on more complex networks, especially for older reticulations if they were followed by later reticulations.</p>
+<p>Now we can combine our trait data and the new columns that can serve as predictors to model transgressive evolution:</p>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> <span class="fu">innerjoin</span>(<span class="fu">select</span>(traits, <span class="op">:</span>morph, <span class="st">r"llength"</span>, <span class="op">:</span>elevation, <span class="op">:</span>lat),</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>               <span class="fu">select</span>(df_shift, <span class="fu">Not</span>(<span class="op">:</span>sum)), <span class="co"># excludes the 'sum' column</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>               on <span class="op">=</span> <span class="op">:</span>morph <span class="op">=&gt;</span> <span class="op">:</span>tipNames) <span class="co"># join our data with shift predictors</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+
+<div><div style="float: left;"><span>17×9 DataFrame</span></div><div style="clear: both;"></div></div><div class="data-frame" style="overflow-x: scroll;"><table class="data-frame table table-sm table-striped" style="margin-bottom: 6px;"><thead><tr class="header"><th class="rowNumber" style="font-weight: bold; text-align: right;">Row</th><th style="text-align: left;">morph</th><th style="text-align: left;">llength</th><th style="text-align: left;">llength_sd</th><th style="text-align: left;">llength_n</th><th style="text-align: left;">elevation</th><th style="text-align: left;">lat</th><th style="text-align: left;">shift_8</th><th style="text-align: left;">shift_18</th><th style="text-align: left;">shift_25</th></tr><tr class="subheader headerLastRow"><th class="rowNumber" style="font-weight: bold; text-align: right;"></th><th title="String31" style="text-align: left;">String31</th><th title="Float64" style="text-align: left;">Float64</th><th title="Float64" style="text-align: left;">Float64</th><th title="Int64" style="text-align: left;">Int64</th><th title="Float64" style="text-align: left;">Float64</th><th title="Float64" style="text-align: left;">Float64</th><th title="Float64" style="text-align: left;">Float64</th><th title="Float64" style="text-align: left;">Float64</th><th title="Float64" style="text-align: left;">Float64</th></tr></thead><tbody><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">1</td><td style="text-align: left;">micranthum</td><td style="text-align: right;">-0.864849</td><td style="text-align: right;">0.345533</td><td style="text-align: right;">75</td><td style="text-align: right;">1.128</td><td style="text-align: right;">43.7447</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">2</td><td style="text-align: left;">occidentale_occidentale</td><td style="text-align: right;">0.542457</td><td style="text-align: right;">0.39549</td><td style="text-align: right;">173</td><td style="text-align: right;">2.14</td><td style="text-align: right;">42.5916</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">3</td><td style="text-align: left;">reptans</td><td style="text-align: right;">0.746643</td><td style="text-align: right;">0.285631</td><td style="text-align: right;">49</td><td style="text-align: right;">0.242</td><td style="text-align: right;">39.9954</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">4</td><td style="text-align: left;">pectinatum</td><td style="text-align: right;">0.834157</td><td style="text-align: right;">0.204992</td><td style="text-align: right;">9</td><td style="text-align: right;">0.55</td><td style="text-align: right;">47.1283</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">5</td><td style="text-align: left;">delicatum</td><td style="text-align: right;">0.0316277</td><td style="text-align: right;">0.384536</td><td style="text-align: right;">50</td><td style="text-align: right;">3.307</td><td style="text-align: right;">38.84</td><td style="text-align: right;">1.0</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">6</td><td style="text-align: left;">pulcherrimum_shastense</td><td style="text-align: right;">-1.04488</td><td style="text-align: right;">0.230817</td><td style="text-align: right;">8</td><td style="text-align: right;">3.17</td><td style="text-align: right;">41.3842</td><td style="text-align: right;">1.0</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">7</td><td style="text-align: left;">elegans</td><td style="text-align: right;">-1.06016</td><td style="text-align: right;">0.258922</td><td style="text-align: right;">21</td><td style="text-align: right;">2.287</td><td style="text-align: right;">46.904</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">8</td><td style="text-align: left;">carneum</td><td style="text-align: right;">0.75653</td><td style="text-align: right;">0.236791</td><td style="text-align: right;">47</td><td style="text-align: right;">1.008</td><td style="text-align: right;">43.2211</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">9</td><td style="text-align: left;">elusum</td><td style="text-align: right;">0.21314</td><td style="text-align: right;">0.260283</td><td style="text-align: right;">14</td><td style="text-align: right;">1.692</td><td style="text-align: right;">44.7146</td><td style="text-align: right;">0.0</td><td style="text-align: right;">1.0</td><td style="text-align: right;">0.0</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">10</td><td style="text-align: left;">aff._viscosum_sp._nov.</td><td style="text-align: right;">-1.371</td><td style="text-align: right;">0.269326</td><td style="text-align: right;">38</td><td style="text-align: right;">3.0785</td><td style="text-align: right;">44.0958</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">11</td><td style="text-align: left;">pauciflorum</td><td style="text-align: right;">0.222039</td><td style="text-align: right;">0.313219</td><td style="text-align: right;">47</td><td style="text-align: right;">2.6375</td><td style="text-align: right;">30.8088</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">12</td><td style="text-align: left;">apachianum</td><td style="text-align: right;">0.289364</td><td style="text-align: right;">0.304548</td><td style="text-align: right;">62</td><td style="text-align: right;">2.68836</td><td style="text-align: right;">33.927</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: right;">1.0</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">13</td><td style="text-align: left;">foliosissimum</td><td style="text-align: right;">0.622095</td><td style="text-align: right;">0.315621</td><td style="text-align: right;">274</td><td style="text-align: right;">2.6825</td><td style="text-align: right;">38.786</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">14</td><td style="text-align: left;">confertum</td><td style="text-align: right;">-0.430446</td><td style="text-align: right;">0.290027</td><td style="text-align: right;">10</td><td style="text-align: right;">3.7045</td><td style="text-align: right;">38.9484</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">15</td><td style="text-align: left;">brandegeei</td><td style="text-align: right;">-0.67488</td><td style="text-align: right;">0.353546</td><td style="text-align: right;">58</td><td style="text-align: right;">2.7435</td><td style="text-align: right;">40.0324</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">16</td><td style="text-align: left;">eddyense</td><td style="text-align: right;">-1.21937</td><td style="text-align: right;">0.0652927</td><td style="text-align: right;">3</td><td style="text-align: right;">2.744</td><td style="text-align: right;">41.3189</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">17</td><td style="text-align: left;">chartaceum</td><td style="text-align: right;">-1.61233</td><td style="text-align: right;">0.156378</td><td style="text-align: right;">16</td><td style="text-align: right;">4.116</td><td style="text-align: right;">37.6344</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td><td style="text-align: right;">0.0</td></tr></tbody></table></div>
+</div>
+</div>
+<p>If we had a particular interest in the reticulation ancestral to the delicatum + pulcherrimum clade, we could look for evidence of transgressive evolution at that reticulation like this (in leaflet length itself, including any effect correlated with latitude and elevation):</p>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>fit_noshift <span class="op">=</span> <span class="fu">phylolm</span>(<span class="pp">@formula</span>(llength <span class="op">~</span> <span class="fl">1</span>), df, net, tipnames<span class="op">=:</span>morph,</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>          withinspecies_var<span class="op">=</span><span class="cn">true</span>, y_mean_std<span class="op">=</span><span class="cn">true</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># using `df` for both, so the no-shift model is recognized as nested in the shifted model</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>fit_sh8 <span class="op">=</span> <span class="fu">phylolm</span>(<span class="pp">@formula</span>(llength <span class="op">~</span> shift_8), df, net, tipnames<span class="op">=:</span>morph,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>          withinspecies_var<span class="op">=</span><span class="cn">true</span>, y_mean_std<span class="op">=</span><span class="cn">true</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="fu">coeftable</span>(fit_sh8) <span class="co"># 95% confidence interval for shift includes 0</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="fu">aic</span>(fit_noshift), <span class="fu">aic</span>(fit_sh8)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<pre><code>(674.853189498432, 675.4984901526377)</code></pre>
+</div>
+</div>
+<p>Note that we fitted the no-shift model with the same data <code>df</code> as the shifted model. The taxa are listed in a different order in <code>df</code> and in the original <code>traits</code> data frame. It helps to use the same data frame for later comparisons. For example, we could run a likelihood ratio test (<code>lrtest</code>) to compare the two models, altough that we would require re-fitting them with ML method instead of the default REML.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./topic3-asr.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Ancestral state reconstruction</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./topic5-discrete.html" class="pagination-link">
+        <span class="nav-page-text">Discrete trait</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

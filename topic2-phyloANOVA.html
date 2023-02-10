@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Comparative methods on networks - Phylogenetic regression</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./topic3-asr.html" rel="next">
+<link href="./topic1-netcalibration.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Comparative methods on networks</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="./index.html" aria-current="page">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="http://crsl4.github.io/PhyloNetworks.jl/latest/">
+ <span class="menu-text">PhyloNetworks</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/cecileane/networkPCM-workshop"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Phylogenetic regression</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation docked overflow-auto">
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Home</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topic-overview.html" class="sidebar-item-text sidebar-link">Workshop overview</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topic1-netcalibration.html" class="sidebar-item-text sidebar-link">Network calibration</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topic2-phyloANOVA.html" class="sidebar-item-text sidebar-link active">Phylogenetic regression</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topic3-asr.html" class="sidebar-item-text sidebar-link">Ancestral state reconstruction</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topic4-impactgeneflow.html" class="sidebar-item-text sidebar-link">Impact of gene flow</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topic5-discrete.html" class="sidebar-item-text sidebar-link">Discrete trait</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topic6-visualization.html" class="sidebar-item-text sidebar-link">Visualization</a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#match-taxon-names" id="toc-match-taxon-names" class="nav-link active" data-scroll-target="#match-taxon-names">match taxon names</a></li>
+  <li><a href="#phylogenetic-regression" id="toc-phylogenetic-regression" class="nav-link" data-scroll-target="#phylogenetic-regression">phylogenetic regression</a></li>
+  <li><a href="#accounting-for-within-species-variation" id="toc-accounting-for-within-species-variation" class="nav-link" data-scroll-target="#accounting-for-within-species-variation">accounting for within-species variation</a></li>
+  <li><a href="#likelihood-ratio-test" id="toc-likelihood-ratio-test" class="nav-link" data-scroll-target="#likelihood-ratio-test">likelihood ratio test</a></li>
+  <li><a href="#within-species-variation-using-species-summaries" id="toc-within-species-variation-using-species-summaries" class="nav-link" data-scroll-target="#within-species-variation-using-species-summaries">within-species variation using species summaries</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/cecileane/networkPCM-workshop/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Phylogenetic regression</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell" data-execution_count="1">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># code from prior sections</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CSV</span>, <span class="bu">DataFrames</span>, <span class="bu">PhyloNetworks</span>, <span class="bu">PhyloPlots</span>, <span class="bu">RCall</span>, <span class="bu">StatsBase</span>, <span class="bu">StatsModels</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Phylogenetic regression and phylogenetic ANOVA are for:</p>
+<ul>
+<li>a continuous response variable</li>
+<li>using 0, 1 or more predictor variables, which can be continuous or discrete</li>
+</ul>
+<p>Here, we can do this when the phylogeny is a network. The residuals are assumed to be phylogenetically correlated. Residuals capture the variation in the response that deviate from the prediction using the predictor variables.</p>
+<p>In this tutorial, we will use the following continuous traits:</p>
+<ul>
+<li>response: leaflet length or width, which were log-transformed to obtain a more normal distribution within each species morph, and a more homogeneous variance across species morphs. A combined trait, log(leaflet area) was calculated from leaflet length and width through the formula <code>area ≈ π length/2 × width/2</code>.<br>
+For this tutorial, we will focus on leaflet length (log-transformed) for the response variable.</li>
+<li>possible predictors: elevation and latitude.</li>
+</ul>
+<p>We will use our calibrated network. If you did not run the previous section or started a new julia session, we can read this network from file:</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>net <span class="op">=</span> <span class="fu">readTopology</span>(<span class="st">"data/polemonium_network_calibrated.phy"</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="match-taxon-names" class="level2">
+<h2 class="anchored" data-anchor-id="match-taxon-names">match taxon names</h2>
+<p>We start with the case when we have 1 value per species —morph in our case.</p>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>traits_morph <span class="op">=</span> CSV.<span class="fu">read</span>(<span class="st">"data/polemonium_traits_morph.csv"</span>, DataFrame)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">select!</span>(traits_morph, <span class="op">:</span>morph, <span class="op">:</span>llength, <span class="op">:</span>elevation, <span class="op">:</span>lat)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">first</span>(traits_morph, <span class="fl">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+
+<div><div style="float: left;"><span>4×4 DataFrame</span></div><div style="clear: both;"></div></div><div class="data-frame" style="overflow-x: scroll;"><table class="data-frame table table-sm table-striped" style="margin-bottom: 6px;"><thead><tr class="header"><th class="rowNumber" style="font-weight: bold; text-align: right;">Row</th><th style="text-align: left;">morph</th><th style="text-align: left;">llength</th><th style="text-align: left;">elevation</th><th style="text-align: left;">lat</th></tr><tr class="subheader headerLastRow"><th class="rowNumber" style="font-weight: bold; text-align: right;"></th><th title="String31" style="text-align: left;">String31</th><th title="Float64" style="text-align: left;">Float64</th><th title="Float64" style="text-align: left;">Float64</th><th title="Float64" style="text-align: left;">Float64</th></tr></thead><tbody><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">1</td><td style="text-align: left;">acutiflorum</td><td style="text-align: right;">0.190834</td><td style="text-align: right;">0.49</td><td style="text-align: right;">62.26</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">2</td><td style="text-align: left;">aff._viscosum_sp._nov.</td><td style="text-align: right;">-1.371</td><td style="text-align: right;">3.0785</td><td style="text-align: right;">44.0958</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">3</td><td style="text-align: left;">albiflorum</td><td style="text-align: right;">0.974391</td><td style="text-align: right;">2.347</td><td style="text-align: right;">41.4855</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">4</td><td style="text-align: left;">apachianum</td><td style="text-align: right;">0.289364</td><td style="text-align: right;">2.68836</td><td style="text-align: right;">33.927</td></tr></tbody></table></div>
+</div>
+</div>
+<p>Taxon names are in the column “morph”, but don’t match exactly with the names in the network —somethign quite typical.</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setdiff</span>(<span class="fu">tipLabels</span>(net), traits_morph.morph) <span class="co"># names in the network but not in trait df</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>7-element Vector{String}:
+ "reptans_2"
+ "delicatum_2"
+ "carneum_2"
+ "elusum_2"
+ "aff._viscosum_sp._nov._2"
+ "foliosissimum_2"
+ "chartaceum_2"</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setdiff</span>(traits_morph.morph, <span class="fu">tipLabels</span>(net)) <span class="co"># names in trait df but not in network</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>20-element Vector{String}:
+ "acutiflorum"
+ "aff._viscosum_sp._nov."
+ "albiflorum"
+ "boreale"
+ "californicum"
+ "carneum"
+ "chartaceum"
+ "delicatum"
+ "elusum"
+ "eximium"
+ "filicinum"
+ "flavum"
+ "foliosissimum"
+ "nevadense"
+ "occidentale_lacustre"
+ "pulcherrimum_lindleyi"
+ "pulcherrimum_pulcherrimum"
+ "reptans"
+ "vanbruntiae"
+ "viscosum"</code></pre>
+</div>
+</div>
+<p>We notice that some taxa in the network have a suffix “_2” that is not in the trait data, and that the trait data has extra species.</p>
+<p>Let’s use a regular expression to remove the suffix “_2” from the tip names in the network:</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> tip <span class="kw">in</span> net.node</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  tip.name <span class="op">=</span> <span class="fu">replace</span>(tip.name, <span class="st">r"_2</span><span class="sc">$</span><span class="st">" =&gt; </span>s<span class="st">"") # s"" to substitute what was found with nothing</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">issubset</span>(<span class="fu">tipLabels</span>(net), traits_morph.morph) <span class="co"># true: all taxa in the network have data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<pre><code>true</code></pre>
+</div>
+</div>
+<p>Finally, let’s reduce our data frame to morphs that are in the network, also something often needed:</p>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">subset!</span>(traits_morph, <span class="op">:</span>morph <span class="op">=&gt;</span> <span class="fu">ByRow</span>(<span class="fu">in</span>(<span class="fu">tipLabels</span>(net))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+
+<div><div style="float: left;"><span>17×4 DataFrame</span></div><div style="clear: both;"></div></div><div class="data-frame" style="overflow-x: scroll;"><table class="data-frame table table-sm table-striped" style="margin-bottom: 6px;"><thead><tr class="header"><th class="rowNumber" style="font-weight: bold; text-align: right;">Row</th><th style="text-align: left;">morph</th><th style="text-align: left;">llength</th><th style="text-align: left;">elevation</th><th style="text-align: left;">lat</th></tr><tr class="subheader headerLastRow"><th class="rowNumber" style="font-weight: bold; text-align: right;"></th><th title="String31" style="text-align: left;">String31</th><th title="Float64" style="text-align: left;">Float64</th><th title="Float64" style="text-align: left;">Float64</th><th title="Float64" style="text-align: left;">Float64</th></tr></thead><tbody><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">1</td><td style="text-align: left;">aff._viscosum_sp._nov.</td><td style="text-align: right;">-1.371</td><td style="text-align: right;">3.0785</td><td style="text-align: right;">44.0958</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">2</td><td style="text-align: left;">apachianum</td><td style="text-align: right;">0.289364</td><td style="text-align: right;">2.68836</td><td style="text-align: right;">33.927</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">3</td><td style="text-align: left;">brandegeei</td><td style="text-align: right;">-0.67488</td><td style="text-align: right;">2.7435</td><td style="text-align: right;">40.0324</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">4</td><td style="text-align: left;">carneum</td><td style="text-align: right;">0.75653</td><td style="text-align: right;">1.008</td><td style="text-align: right;">43.2211</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">5</td><td style="text-align: left;">chartaceum</td><td style="text-align: right;">-1.61233</td><td style="text-align: right;">4.116</td><td style="text-align: right;">37.6344</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">6</td><td style="text-align: left;">confertum</td><td style="text-align: right;">-0.430446</td><td style="text-align: right;">3.7045</td><td style="text-align: right;">38.9484</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">7</td><td style="text-align: left;">delicatum</td><td style="text-align: right;">0.0316277</td><td style="text-align: right;">3.307</td><td style="text-align: right;">38.84</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">8</td><td style="text-align: left;">eddyense</td><td style="text-align: right;">-1.21937</td><td style="text-align: right;">2.744</td><td style="text-align: right;">41.3189</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">9</td><td style="text-align: left;">elegans</td><td style="text-align: right;">-1.06016</td><td style="text-align: right;">2.287</td><td style="text-align: right;">46.904</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">10</td><td style="text-align: left;">elusum</td><td style="text-align: right;">0.21314</td><td style="text-align: right;">1.692</td><td style="text-align: right;">44.7146</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">11</td><td style="text-align: left;">foliosissimum</td><td style="text-align: right;">0.622095</td><td style="text-align: right;">2.6825</td><td style="text-align: right;">38.786</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">12</td><td style="text-align: left;">micranthum</td><td style="text-align: right;">-0.864849</td><td style="text-align: right;">1.128</td><td style="text-align: right;">43.7447</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">13</td><td style="text-align: left;">occidentale_occidentale</td><td style="text-align: right;">0.542457</td><td style="text-align: right;">2.14</td><td style="text-align: right;">42.5916</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">14</td><td style="text-align: left;">pauciflorum</td><td style="text-align: right;">0.222039</td><td style="text-align: right;">2.6375</td><td style="text-align: right;">30.8088</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">15</td><td style="text-align: left;">pectinatum</td><td style="text-align: right;">0.834157</td><td style="text-align: right;">0.55</td><td style="text-align: right;">47.1283</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">16</td><td style="text-align: left;">pulcherrimum_shastense</td><td style="text-align: right;">-1.04488</td><td style="text-align: right;">3.17</td><td style="text-align: right;">41.3842</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">17</td><td style="text-align: left;">reptans</td><td style="text-align: right;">0.746643</td><td style="text-align: right;">0.242</td><td style="text-align: right;">39.9954</td></tr></tbody></table></div>
+</div>
+</div>
+</section>
+<section id="phylogenetic-regression" class="level2">
+<h2 class="anchored" data-anchor-id="phylogenetic-regression">phylogenetic regression</h2>
+<p>Let’s fit our model: a Browian motion by default. The output shows the estimated parameters, confidence intervals for the regression coefficients, and other summary.</p>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>fit_bm    <span class="op">=</span> <span class="fu">phylolm</span>(<span class="pp">@formula</span>(llength <span class="op">~</span> elevation <span class="op">+</span> lat), traits_morph, net;</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                    tipnames<span class="op">=:</span>morph) <span class="co"># default model: BM</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<pre><code>PhyloNetworkLinearModel
+
+Formula: llength ~ 1 + elevation + lat
+
+Model: Brownian motion
+
+Parameter Estimates, using REML:
+phylogenetic variance rate: 0.545368
+
+Coefficients:
+────────────────────────────────────────────────────────────────────────────
+                  Coef.  Std. Error      t  Pr(&gt;|t|)  Lower 95%    Upper 95%
+────────────────────────────────────────────────────────────────────────────
+(Intercept)   4.23012     1.81753     2.33    0.0355   0.331896   8.12834
+elevation    -0.58782     0.160091   -3.67    0.0025  -0.93118   -0.24446
+lat          -0.0805585   0.0391812  -2.06    0.0589  -0.164594   0.00347682
+────────────────────────────────────────────────────────────────────────────
+Log Likelihood: -18.3444303454
+AIC: 44.6888606908</code></pre>
+</div>
+</div>
+<p>Pagel’s lambda model can be fitted if the phylogeny is a time-consistent network (all paths from the root to a given node have the same length) and ultrametric:</p>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>fit_pagel <span class="op">=</span> <span class="fu">phylolm</span>(<span class="pp">@formula</span>(llength <span class="op">~</span> elevation <span class="op">+</span> lat), traits_morph, net;</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>                    model<span class="op">=</span><span class="st">"lambda"</span>, tipnames<span class="op">=:</span>morph)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>[ Info: Maximum lambda value to maintain positive branch lengths: 1.30752</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<pre><code>PhyloNetworkLinearModel
+
+Formula: llength ~ 1 + elevation + lat
+
+Model: Pagel's lambda
+
+Parameter Estimates, using REML:
+phylogenetic variance rate: 0.582156
+Lambda: 1.1075
+
+Coefficients:
+───────────────────────────────────────────────────────────────────────────
+                 Coef.  Std. Error      t  Pr(&gt;|t|)  Lower 95%    Upper 95%
+───────────────────────────────────────────────────────────────────────────
+(Intercept)   4.14696     1.8205     2.28    0.0389   0.242364   8.05155
+elevation    -0.580068    0.160465  -3.61    0.0028  -0.924231  -0.235906
+lat          -0.079338    0.039152  -2.03    0.0622  -0.163311   0.00463469
+───────────────────────────────────────────────────────────────────────────
+Log Likelihood: -18.3375456513
+AIC: 46.6750913026</code></pre>
+</div>
+</div>
+<ul>
+<li>Which model seems best, based on AIC?</li>
+<li>What is the estimate of λ, and what does it mean?</li>
+<li>Which predictors seem to be correlated with log-leaflet-length, based on Wald-type tests?</li>
+</ul>
+</section>
+<section id="accounting-for-within-species-variation" class="level2">
+<h2 class="anchored" data-anchor-id="accounting-for-within-species-variation">accounting for within-species variation</h2>
+<p>If we have access to traits at the individual level, rather than aggregated at the species level, then we can account for within-species variation. It’s best to do so, because ignoring within-species variation (when present) can cause various biases.</p>
+<p>We start by reading the individual trait data and removing rows for taxa not in the network.</p>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>traits_indiv <span class="op">=</span> CSV.<span class="fu">read</span>(<span class="st">"data/polemonium_traits_individual.csv"</span>, DataFrame)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">subset!</span>(traits_indiv, <span class="op">:</span>morph <span class="op">=&gt;</span> <span class="fu">ByRow</span>(<span class="fu">in</span>(<span class="fu">tipLabels</span>(net))))</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">last</span>(traits_indiv, <span class="fl">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+
+<div><div style="float: left;"><span>4×6 DataFrame</span></div><div style="clear: both;"></div></div><div class="data-frame" style="overflow-x: scroll;"><table class="data-frame table table-sm table-striped" style="margin-bottom: 6px;"><thead><tr class="header"><th class="rowNumber" style="font-weight: bold; text-align: right;">Row</th><th style="text-align: left;">morph</th><th style="text-align: left;">llength</th><th style="text-align: left;">lwidth</th><th style="text-align: left;">elevation</th><th style="text-align: left;">lat</th><th style="text-align: left;">larea</th></tr><tr class="subheader headerLastRow"><th class="rowNumber" style="font-weight: bold; text-align: right;"></th><th title="String31" style="text-align: left;">String31</th><th title="Float64" style="text-align: left;">Float64</th><th title="Float64" style="text-align: left;">Float64</th><th title="Float64" style="text-align: left;">Float64</th><th title="Float64" style="text-align: left;">Float64</th><th title="Float64" style="text-align: left;">Float64</th></tr></thead><tbody><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">1</td><td style="text-align: left;">reptans</td><td style="text-align: right;">0.675492</td><td style="text-align: right;">-0.281038</td><td style="text-align: right;">0.242</td><td style="text-align: right;">39.9954</td><td style="text-align: right;">0.15289</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">2</td><td style="text-align: left;">reptans</td><td style="text-align: right;">1.23547</td><td style="text-align: right;">0.135405</td><td style="text-align: right;">0.242</td><td style="text-align: right;">39.9954</td><td style="text-align: right;">1.12931</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">3</td><td style="text-align: left;">reptans</td><td style="text-align: right;">0.496727</td><td style="text-align: right;">-0.235722</td><td style="text-align: right;">0.242</td><td style="text-align: right;">39.9954</td><td style="text-align: right;">0.0194399</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">4</td><td style="text-align: left;">reptans</td><td style="text-align: right;">0.703098</td><td style="text-align: right;">-0.145026</td><td style="text-align: right;">0.242</td><td style="text-align: right;">39.9954</td><td style="text-align: right;">0.316507</td></tr></tbody></table></div>
+</div>
+</div>
+<p>Here, the predictors (elevation and latitude) have the same value for all individuals within a species: entered as the average elevation and latiture across a much much bigger sample size for each species. The model below accounts for within-species variation in the response variable, not in the predictor variables.</p>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>fit_ind <span class="op">=</span> <span class="fu">phylolm</span>(<span class="pp">@formula</span>(llength <span class="op">~</span> elevation <span class="op">+</span> lat), traits_indiv, net;</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>                  tipnames<span class="op">=:</span>morph, withinspecies_var<span class="op">=</span><span class="cn">true</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<pre><code>PhyloNetworkLinearModel
+
+Formula: llength ~ 1 + elevation + lat
+
+Model: Brownian motion
+
+Parameter Estimates, using REML:
+phylogenetic variance rate: 0.538129
+within-species variance: 0.107484
+
+Coefficients:
+────────────────────────────────────────────────────────────────────────────
+                  Coef.  Std. Error      t  Pr(&gt;|t|)  Lower 95%    Upper 95%
+────────────────────────────────────────────────────────────────────────────
+(Intercept)   4.22609     1.81331     2.33    0.0352   0.336929   8.11526
+elevation    -0.585523    0.16023    -3.65    0.0026  -0.929181  -0.241865
+lat          -0.0804964   0.0391184  -2.06    0.0587  -0.164397   0.00340418
+────────────────────────────────────────────────────────────────────────────
+Log Likelihood: -332.2511620613
+AIC: 674.5023241226</code></pre>
+</div>
+</div>
+<ul>
+<li>What are the estimated variances?</li>
+<li>Did the estimated regression coefficients change much compared to the previous analysis at the species level?</li>
+<li>How about the strength of evidence that they correlate with log-leaflet-length, based on Wald-type tests?</li>
+</ul>
+</section>
+<section id="likelihood-ratio-test" class="level2">
+<h2 class="anchored" data-anchor-id="likelihood-ratio-test">likelihood ratio test</h2>
+<p>We can get p-values with a likelihood ratio test. For likelihood ratio tests, we need to use the ML criterion, not REML, to compare models with different “fixed” effects. ML tends to underestimate variances compared to REML, however.</p>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>fit_ml <span class="op">=</span> <span class="fu">phylolm</span>(<span class="pp">@formula</span>(llength <span class="op">~</span> elevation <span class="op">+</span> lat), traits_indiv, net;</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>                reml<span class="op">=</span><span class="cn">false</span>, tipnames<span class="op">=:</span>morph, withinspecies_var<span class="op">=</span><span class="cn">true</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>fit_ml_nolat <span class="op">=</span> <span class="fu">phylolm</span>(<span class="pp">@formula</span>(llength <span class="op">~</span> elevation), traits_indiv, net;</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>                reml<span class="op">=</span><span class="cn">false</span>, tipnames<span class="op">=:</span>morph, withinspecies_var<span class="op">=</span><span class="cn">true</span>)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="fu">lrtest</span>(fit_ml_nolat, fit_ml)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<pre><code>Likelihood-ratio test: 2 models fitted on 954 observations
+──────────────────────────────────────────────────────
+     DOF  ΔDOF     LogLik  Deviance   Chisq  p(&gt;Chisq)
+──────────────────────────────────────────────────────
+[1]    4        -330.9506  661.9012                   
+[2]    5     1  -328.7027  657.4054  4.4958     0.0340
+──────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+</section>
+<section id="within-species-variation-using-species-summaries" class="level2">
+<h2 class="anchored" data-anchor-id="within-species-variation-using-species-summaries">within-species variation using species summaries</h2>
+<p>The data we used above has 1 row per individual, which can lead to a very large data set (considering that we have 17 species):</p>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(traits_indiv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<pre><code>954</code></pre>
+</div>
+</div>
+<p>and sometimes we don’t have this fine-grained individual-level information anyway. In fact, the method only needs to know the sample size, observed mean and variance of the response trait (log-leaflet-length) within each species. Let’s illustrate how to summarize our data with 1 row per species and extra columns: the number of sampled individuals, their mean and variance within each morph.</p>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>num_nonmissing <span class="op">=</span> x <span class="op">-&gt;</span> <span class="fu">length</span>(.!(<span class="fu">ismissing</span>.(x)))</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>traits_meanstd <span class="op">=</span> <span class="fu">combine</span>( <span class="fu">groupby</span>(traits_indiv, <span class="op">:</span>morph),</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>llength <span class="op">=&gt;</span> mean <span class="op">=&gt;</span> <span class="op">:</span>llength, <span class="co"># last term = new column name</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>llength <span class="op">=&gt;</span> std <span class="op">=&gt;</span> <span class="op">:</span>llength_sd,</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>llength <span class="op">=&gt;</span> num_nonmissing <span class="op">=&gt;</span> <span class="op">:</span>llength_n,</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>elevation <span class="op">=&gt;</span> mean <span class="op">=&gt;</span> <span class="op">:</span>elevation,</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span>lat <span class="op">=&gt;</span> mean <span class="op">=&gt;</span> <span class="op">:</span>lat</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="15">
+
+<div><div style="float: left;"><span>17×6 DataFrame</span></div><div style="clear: both;"></div></div><div class="data-frame" style="overflow-x: scroll;"><table class="data-frame table table-sm table-striped" style="margin-bottom: 6px;"><thead><tr class="header"><th class="rowNumber" style="font-weight: bold; text-align: right;">Row</th><th style="text-align: left;">morph</th><th style="text-align: left;">llength</th><th style="text-align: left;">llength_sd</th><th style="text-align: left;">llength_n</th><th style="text-align: left;">elevation</th><th style="text-align: left;">lat</th></tr><tr class="subheader headerLastRow"><th class="rowNumber" style="font-weight: bold; text-align: right;"></th><th title="String31" style="text-align: left;">String31</th><th title="Float64" style="text-align: left;">Float64</th><th title="Float64" style="text-align: left;">Float64</th><th title="Int64" style="text-align: left;">Int64</th><th title="Float64" style="text-align: left;">Float64</th><th title="Float64" style="text-align: left;">Float64</th></tr></thead><tbody><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">1</td><td style="text-align: left;">aff._viscosum_sp._nov.</td><td style="text-align: right;">-1.371</td><td style="text-align: right;">0.269326</td><td style="text-align: right;">38</td><td style="text-align: right;">3.0785</td><td style="text-align: right;">44.0958</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">2</td><td style="text-align: left;">apachianum</td><td style="text-align: right;">0.289364</td><td style="text-align: right;">0.304548</td><td style="text-align: right;">62</td><td style="text-align: right;">2.68836</td><td style="text-align: right;">33.927</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">3</td><td style="text-align: left;">brandegeei</td><td style="text-align: right;">-0.67488</td><td style="text-align: right;">0.353546</td><td style="text-align: right;">58</td><td style="text-align: right;">2.7435</td><td style="text-align: right;">40.0324</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">4</td><td style="text-align: left;">carneum</td><td style="text-align: right;">0.75653</td><td style="text-align: right;">0.236791</td><td style="text-align: right;">47</td><td style="text-align: right;">1.008</td><td style="text-align: right;">43.2211</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">5</td><td style="text-align: left;">chartaceum</td><td style="text-align: right;">-1.61233</td><td style="text-align: right;">0.156378</td><td style="text-align: right;">16</td><td style="text-align: right;">4.116</td><td style="text-align: right;">37.6344</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">6</td><td style="text-align: left;">confertum</td><td style="text-align: right;">-0.430446</td><td style="text-align: right;">0.290027</td><td style="text-align: right;">10</td><td style="text-align: right;">3.7045</td><td style="text-align: right;">38.9484</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">7</td><td style="text-align: left;">delicatum</td><td style="text-align: right;">0.0316277</td><td style="text-align: right;">0.384536</td><td style="text-align: right;">50</td><td style="text-align: right;">3.307</td><td style="text-align: right;">38.84</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">8</td><td style="text-align: left;">eddyense</td><td style="text-align: right;">-1.21937</td><td style="text-align: right;">0.0652927</td><td style="text-align: right;">3</td><td style="text-align: right;">2.744</td><td style="text-align: right;">41.3189</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">9</td><td style="text-align: left;">elegans</td><td style="text-align: right;">-1.06016</td><td style="text-align: right;">0.258922</td><td style="text-align: right;">21</td><td style="text-align: right;">2.287</td><td style="text-align: right;">46.904</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">10</td><td style="text-align: left;">elusum</td><td style="text-align: right;">0.21314</td><td style="text-align: right;">0.260283</td><td style="text-align: right;">14</td><td style="text-align: right;">1.692</td><td style="text-align: right;">44.7146</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">11</td><td style="text-align: left;">foliosissimum</td><td style="text-align: right;">0.622095</td><td style="text-align: right;">0.315621</td><td style="text-align: right;">274</td><td style="text-align: right;">2.6825</td><td style="text-align: right;">38.786</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">12</td><td style="text-align: left;">micranthum</td><td style="text-align: right;">-0.864849</td><td style="text-align: right;">0.345533</td><td style="text-align: right;">75</td><td style="text-align: right;">1.128</td><td style="text-align: right;">43.7447</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">13</td><td style="text-align: left;">occidentale_occidentale</td><td style="text-align: right;">0.542457</td><td style="text-align: right;">0.39549</td><td style="text-align: right;">173</td><td style="text-align: right;">2.14</td><td style="text-align: right;">42.5916</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">14</td><td style="text-align: left;">pauciflorum</td><td style="text-align: right;">0.222039</td><td style="text-align: right;">0.313219</td><td style="text-align: right;">47</td><td style="text-align: right;">2.6375</td><td style="text-align: right;">30.8088</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">15</td><td style="text-align: left;">pectinatum</td><td style="text-align: right;">0.834157</td><td style="text-align: right;">0.204992</td><td style="text-align: right;">9</td><td style="text-align: right;">0.55</td><td style="text-align: right;">47.1283</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">16</td><td style="text-align: left;">pulcherrimum_shastense</td><td style="text-align: right;">-1.04488</td><td style="text-align: right;">0.230817</td><td style="text-align: right;">8</td><td style="text-align: right;">3.17</td><td style="text-align: right;">41.3842</td></tr><tr><td class="rowNumber" style="font-weight: bold; text-align: right;">17</td><td style="text-align: left;">reptans</td><td style="text-align: right;">0.746643</td><td style="text-align: right;">0.285631</td><td style="text-align: right;">49</td><td style="text-align: right;">0.242</td><td style="text-align: right;">39.9954</td></tr></tbody></table></div>
+</div>
+</div>
+<p>We can use this input data to fit our phylogenetic regression, thanks to the option <code>y_mean_std=true</code>. This format requires 3 columns for the response variable, containing:</p>
+<ul>
+<li>the mean (one row per species): <code>llength</code> in our case</li>
+<li>the standard deviation (SD, square-root of the variance) named with suffix “_sd”, <code>llength_sd</code> in our case,</li>
+<li>the sample size, that is, the number of individuals from which the mean and SDs were calculated, named with suffix “_n”, so <code>llength_n</code> in our case.</li>
+</ul>
+<p>Now we fit the model as above using our summarized dataset, except that we use option <code>y_mean_std=true</code> to let the function know about the format, and get the same results as before:</p>
+<div class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">phylolm</span>(<span class="pp">@formula</span>(llength <span class="op">~</span> elevation <span class="op">+</span> lat), traits_meanstd, net; <span class="co"># same result as fit_ind</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>        tipnames<span class="op">=:</span>morph, withinspecies_var<span class="op">=</span><span class="cn">true</span>, y_mean_std<span class="op">=</span><span class="cn">true</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="16">
+<pre><code>PhyloNetworkLinearModel
+
+Formula: llength ~ 1 + elevation + lat
+
+Model: Brownian motion
+
+Parameter Estimates, using REML:
+phylogenetic variance rate: 0.538129
+within-species variance: 0.107484
+
+Coefficients:
+────────────────────────────────────────────────────────────────────────────
+                  Coef.  Std. Error      t  Pr(&gt;|t|)  Lower 95%    Upper 95%
+────────────────────────────────────────────────────────────────────────────
+(Intercept)   4.22609     1.81331     2.33    0.0352   0.336929   8.11526
+elevation    -0.585523    0.16023    -3.65    0.0026  -0.929181  -0.241865
+lat          -0.0804964   0.0391184  -2.06    0.0587  -0.164397   0.00340418
+────────────────────────────────────────────────────────────────────────────
+Log Likelihood: -332.2511620613
+AIC: 674.5023241226</code></pre>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./topic1-netcalibration.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Network calibration</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./topic3-asr.html" class="pagination-link">
+        <span class="nav-page-text">Ancestral state reconstruction</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>
