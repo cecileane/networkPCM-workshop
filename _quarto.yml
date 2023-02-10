@@ -1,8 +1,13 @@
 project:
   type: website
+  execute-dir: project
+  output-dir: _site
+  render:
+      - index.qmd
+      - topic*.qmd
 
 website:
-  title: "Comparative methods on reticulate phylogenies"
+  title: "Comparative methods on networks"
   site-url: https://cecileane.github.io/networkPCM-workshop
   repo-url: https://github.com/cecileane/networkPCM-workshop
   repo-actions: [issue]
@@ -11,7 +16,7 @@ website:
       - href: index.qmd
         text: Home
       - href: http://crsl4.github.io/PhyloNetworks.jl/latest/
-        text: PhyloNetworks manual
+        text: PhyloNetworks
     right:
       - icon: github
         href: https://github.com/cecileane/networkPCM-workshop
@@ -19,8 +24,10 @@ website:
     style: "docked"
     search: true
     contents:
-      - index.qmd
-      - topic*.qmd
+      - href: index.qmd
+        text: Home
+      - topic-overview.qmd
+      - topic1-netcalibration.qmd
   page-navigation: true
 
 format:
@@ -29,3 +36,4 @@ format:
     css: styles.css
     toc: true
 
+jupyter: julia-1.8

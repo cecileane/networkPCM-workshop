@@ -15,3 +15,26 @@ We will use methods implemented [PhyloNetworks](https://github.com/crsl4/PhyloNe
 
 You can find and clone the workshop material at this
 [github repository](https://github.com/cecileane/networkPCM-workshop).
+
+### preparation
+
+What you should do prior to the workshop:
+
+- install [Julia](https://www.julialang.org/downloads/)
+  and add it to your [`PATH`](https://julialang.org/downloads/platform/#optional_add_julia_to_path)
+- install [VSCode](https://code.visualstudio.com/download)
+  or another editor, if you don't have one already.
+
+If you use VSCode, like we will demonstrate, then within VSCode:
+
+- add `code` to your `PATH`, by opening the command palette then
+  searching for "shell command"
+- within VSCode, install the [Julia extension](https://www.julia-vscode.org/docs/stable/setup/)
+  and the [Quarto extension](https://marketplace.visualstudio.com/items?itemName=quarto.quarto).
+
+Install Julia and some packages:
+
+- Open julia, either in a terminal, or terminal integrated
+  in VSCode, or by opening the app
+- within julia, install [PhyloNetworks](http://crsl4.github.io/PhyloNetworks.jl/latest/man/installation/)
+  and [PhyloPlots](https://cecileane.github.io/PhyloPlots.jl/stable/man/installation/#Installation).

@@ -1,0 +1,58 @@
+---
+title: "Workshop overview"
+format: html
+---
+
+Comparative methods are meant to answer questions about trait evolution.
+In this workshop, we will learn about methods on networks:
+
+- to account for reticulation in the phylogeny, and
+- to look at how reticulation might have affected trait evolution.
+
+## topics we will cover
+
+- How to calibrate a network, if needed
+- continuous response: phylogenetic regression & phylogenetic ANOVA
+  when the phylogeny is a network. Predictors can be continuous or discrete.
+  * ancestral state reconstruction
+  * how account for within-species variation in the response trait
+  * how to measure the impact of gene flow
+- discrete trait
+  * ancestral state reconstruction
+  * was the trait via gene flow?
+- How to visualize the results
+
+## let's get started
+
+load the packages we will use:
+
+```{julia}
+#| code-fold: show
+using CSV               # read/write CSV and similar formats
+using DataFrames        # versatile tabular data format
+using PhyloNetworks     # includes many utilities
+using PhyloPlots        # for plotting networks: via R
+using RCall             # run R within Julia
+```
+
+We will use data on *Polemonium* from
+[Rose et al. 2021](https://doi.org/10.1093/sysbio/syaa049) and
+[Teo et al. 2023](https://doi.org/10.1101/2022.05.12.490814).
+
+![*Polemonium californicum*, by Jeffrey Rose](https://polemoniaceae.files.wordpress.com/2014/12/polemonium_californicum.jpg)
+
+first load the network topology:
+
+```{julia}
+#| code-fold: show
+snaq_net = readTopology("data/polemonium_network_fromSNaQ.phy");
+R"par"(mar=[0,0,0,0], cex=0.7); # 0 margins, cex<1 for smaller 'character expansion'
+plot(snaq_net; showedgelength=true, xlim=[0,18]); # increased limit to see full taxon labels
+```
+
+then the trait data
+
+```{julia}
+#| code-fold: show
+traits_indiv = CSV.File("data/polemonium_traits_individual.csv") |> DataFrame
+```
