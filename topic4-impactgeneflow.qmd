@@ -1,0 +1,151 @@
+---
+title: "Impact of gene flow"
+format: html
+---
+
+```{julia}
+#| code-fold: true
+# code from prior sections
+using CSV, DataFrames, PhyloNetworks, PhyloPlots, RCall, StatsBase, StatsModels
+net = readTopology("data/polemonium_network_calibrated.phy");
+for tip in net.node tip.name = replace(tip.name, r"_2$" => s""); end
+traits = CSV.read("data/polemonium_traits_morph.csv", DataFrame)
+subset!(traits, :morph => ByRow(in(tipLabels(net))));
+```
+
+What happened to the trait during gene flow? We can ask this question in
+various ways.
+
+## network model versus tree model
+
+First, we can investigate if the network (with gene flow) is a better
+explanation for the trait evolution than a tree.
+Several trees are displayed in the network, but the tree that represents
+most of the genome has the "major" hybrid edges, those with inheritance γ>0.5.
+We can delete all the "minor" hybrid edges (with γ<0.5) as shown below.
+
+```{julia}
+#| label: fig-4-majortree
+#| fig-cap: "major tree, drawn proportional to edge lengths"
+tree = majorTree(net)
+R"par"(mar=[0,0,0,0]);
+plot(tree, tipoffset=0.05, useedgelength=true, xlim=[1,2.5]);
+```
+
+```{julia}
+fit_net = phylolm(@formula(llength ~ elevation + lat), traits, net;
+                  tipnames=:morph, withinspecies_var=true, y_mean_std=true)
+fit_tree = phylolm(@formula(llength ~ elevation + lat), traits, tree;
+                  tipnames=:morph, withinspecies_var=true, y_mean_std=true)
+aic(fit_net), aic(fit_tree)
+```
+
+Which model seems to fit best: network or major tree?
+
+Note that this network-vs-tree question applies to the phylogenetic correlation
+of *residuals* here. It could be gene flow had an impact on the geographic
+distribution at reticulations, which impacted evelation and latitude.
+In that case, this impact would be explained by the predictors that we used,
+and would not be seen here. But it could appear from a model without any
+predictors (something you could run if interested).
+
+We can check to see how much of a difference it makes on coefficients:
+```{julia}
+coeftable(fit_net)
+```
+```{julia}
+coeftable(fit_tree)
+```
+
+or how much difference it makes on the estimated variance parameters:
+```{julia}
+round.((sigma2_phylo(fit_net), sigma2_phylo(fit_tree)), sigdigits=4)
+```
+```{julia}
+round.((sigma2_within(fit_net), sigma2_within(fit_tree)), sigdigits=4)
+```
+
+Out of curiousity, we can do this again with the most "minor" tree:
+where major hybrid edges are deleted and all minor hybrid edges are kept.
+```{julia}
+minortree = deepcopy(net)
+while minortree.numHybrids > 0
+  for e in minortree.edge
+    if e.hybrid && e.isMajor
+      PhyloNetworks.deletehybridedge!(minortree, e) # changes the list of edges
+      break
+    end
+  end
+end
+# plot(minortree, tipoffset=0.05, useedgelength=true, xlim=[1,2.5]);
+fit_minor = phylolm(@formula(llength ~ elevation + lat), traits, minortree;
+                  tipnames=:morph, withinspecies_var=true, y_mean_std=true)
+aic(fit_net), aic(fit_tree), aic(fit_minor)
+```
+
+## transgressive evolution at reticulations
+
+Another question we may ask is whether the trait at reticulations deviates from
+the weighted average of its parent populations (immediately before gene flow).
+Such would be the case if a hybrid species's trait is outside the range of
+its parents.
+This "transgressive" evolution can be modelled with a shift in the trait
+along the edge just below the reticulation. This shift quantifies the
+difference between the trait at the hybrid node and the weighted average of
+the immediate parents.
+
+The code below builds a data frame with 1 predictor column per reticulation:
+this column quantifies the effect of a transgressive shift on each taxon
+in the phylogeny.
+```{julia}
+df_shift = regressorHybrid(net)
+```
+
+To know which shift corresponds to which reticulation, we could plot
+the network and ask to see the edge numbers, as shown below.
+
+```{julia}
+#| include: false
+R"par"(mar=[0,0,0,0]);
+plot(net, tipoffset=0.05, showedgenumber=true, xlim=[1,13]);
+```
+
+But the data frame shows us which tips are impacted by each reticulation:
+- transgressive shift on edge 8: reticulation leading to delicatum and
+  pulcherrimum_shastense,
+- shift on edge 18: below reticulation leading to elusum
+- shift on edge 25: below reticulation leading to apachianum.
+The values in this data frame are the proportion of the genome that
+each species inherited from the reticulation, based on the network's γ values.
+In our case, they are only 0 or 1, but the values could be in between on
+more complex networks, especially for older reticulations if they were
+followed by later reticulations.
+
+Now we can combine our trait data and the new columns that can serve
+as predictors to model transgressive evolution:
+```{julia}
+df = innerjoin(select(traits, :morph, r"llength", :elevation, :lat),
+               select(df_shift, Not(:sum)), # excludes the 'sum' column
+               on = :morph => :tipNames) # join our data with shift predictors
+```
+
+If we had a particular interest in the reticulation ancestral to the
+delicatum + pulcherrimum clade, we could look for evidence of transgressive
+evolution at that reticulation like this (in leaflet length itself, including
+any effect correlated with latitude and elevation):
+```{julia}
+fit_noshift = phylolm(@formula(llength ~ 1), df, net, tipnames=:morph,
+          withinspecies_var=true, y_mean_std=true)
+# using `df` for both, so the no-shift model is recognized as nested in the shifted model
+fit_sh8 = phylolm(@formula(llength ~ shift_8), df, net, tipnames=:morph,
+          withinspecies_var=true, y_mean_std=true)
+coeftable(fit_sh8) # 95% confidence interval for shift includes 0
+aic(fit_noshift), aic(fit_sh8)
+```
+
+Note that we fitted the no-shift model with the same data `df` as the shifted
+model. The taxa are listed in a different order in `df` and in the original
+`traits` data frame. It helps to use the same data frame for later comparisons.
+For example, we could run a likelihood ratio test (`lrtest`) to compare the two
+models, altough that we would require re-fitting them with ML method
+instead of the default REML.

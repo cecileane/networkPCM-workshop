@@ -28,11 +28,16 @@ website:
         text: Home
       - topic-overview.qmd
       - topic1-netcalibration.qmd
+      - topic2-phyloANOVA.qmd
+      - topic3-asr.qmd
+      - topic4-impactgeneflow.qmd
+      - topic5-discrete.qmd
+      - topic6-visualization.qmd
   page-navigation: true
 
 format:
   html:
-    theme: cosmo
+    theme: flatly
     css: styles.css
     toc: true
 

@@ -1,0 +1,118 @@
+---
+title: "Ancestral state reconstruction"
+format: html
+---
+
+```{julia}
+#| code-fold: true
+# code from prior sections
+using CSV, DataFrames, PhyloNetworks, PhyloPlots, RCall, StatsBase, StatsModels
+net = readTopology("data/polemonium_network_calibrated.phy");
+for tip in net.node tip.name = replace(tip.name, r"_2$" => s""); end
+```
+
+We load the data at the species (morph) level and focus on log-leaflet-length,
+without any predictor to predict ancestral states:
+```{julia}
+traits = CSV.read("data/polemonium_traits_morph.csv", DataFrame)
+subset!(traits, :morph => ByRow(in(tipLabels(net)))) # subset of rows
+fit = phylolm(@formula(llength ~ 1), traits, net; tipnames=:morph,
+              withinspecies_var=true, y_mean_std=true)
+```
+
+From the intercept coefficient we get a prediction at the root
+(-0.293 on the log scale) but that's it.
+
+## predict ancestral states
+
+This is typically called "ancestral state reconstruction" but prediction
+seems a more accurate term. This technique estimates the mean of
+nodes in the network: ancestral or extant species, conditional on the data.
+It's important to look at prediction intervals, not just a "point" estimate.
+
+```{julia}
+#| warning: false
+asr = ancestralStateReconstruction(fit)
+asr_pred = expectations(asr) # predictions at all nodes
+```
+
+This output is somewhat cryptic though, because each row refers to a node
+number and it's unclear which are tips, which are internal nodes, and
+which node has what number.
+We can also get prediction intervals (sometimes called confidence intervals)
+but with the same cryptic ordering of nodes:
+```{julia}
+predint(asr)
+```
+
+## extant species
+
+First, we build a data frame to get this information in a more interpretable
+format for the tips. Below is one way to map the morph names in the
+order in which they appear in the data, to node numbers in the network:
+
+```{julia}
+tipnames_trait = traits.morph
+function get_morph_nodenumber(label)
+  i = findfirst(n -> n.name == label, net.node)
+  net.node[i].number
+end
+tipnumber = [get_morph_nodenumber(label) for label in tipnames_trait]
+hcat(tipnames_trait, tipnumber)
+```
+
+With this mapping, we can replace the node numbers by the morph names,
+and add other information from the trait data such as
+the sample size for each morph:
+```{julia}
+tipindex_asr = indexin(tipnumber, asr_pred.nodeNumber)
+res_tip = DataFrame(
+      morph     = tipnames_trait, # morph names, ordered as in the trait data frame
+      samplesize= traits.llength_n,
+      observed  = traits.llength,
+      predicted = asr_pred.condExpectation[tipindex_asr],
+      low       = predint(asr)[tipindex_asr,1],
+      high      = predint(asr)[tipindex_asr,2]
+  )
+```
+
+The predicted species means are close, but not exactly equal, to the observed
+means in each sample. This is because phylogenetic relatedness is used
+to share information across species. Little is shared for species with a large
+sample size, such as foliosissimum. But for species with a small sample size,
+such as eddyense, more information is borrowed from closely-related species.
+This is highlighted below:
+```{julia}
+filter(:morph => n -> n in ["eddyense","foliosissimum"], res_tip)
+```
+
+## ancestral nodes
+
+To look at ancestral states, it's best to map the predictions and intervals
+onto the network.
+To do so, we will build a data frame containing annotations to be placed
+at nodes, then plot the network with this data frame as argument.
+
+```{julia}
+nodepred = expectationsPlot(asr)
+first(nodepred, 4)
+```
+
+```{julia}
+#| label: fig-3-asrmean
+#| fig-cap: "ancestral state reconstruction: species means conditional on data"
+R"par"(mar=[0,0,0,0]);
+plot(net, nodelabel=nodepred, nodecex=0.8, tipoffset=0.1, xlim=[0,13]);
+```
+
+```{julia}
+nodeint = predintPlot(asr)
+first(nodeint, 4)
+```
+
+```{julia}
+#| label: fig-3-asrint
+#| fig-cap: "ancestral state reconstruction: 95% prediction interval"
+R"par"(mar=[0,0,0,0]);
+plot(net, nodelabel=nodeint, nodecex=0.7, tipoffset=0.1, xlim=[-0.1,13]);
+```

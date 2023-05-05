@@ -1,0 +1,191 @@
+---
+title: "Phylogenetic regression"
+format: html
+---
+
+```{julia}
+#| code-fold: true
+# code from prior sections
+using CSV, DataFrames, PhyloNetworks, PhyloPlots, RCall, StatsBase, StatsModels
+```
+
+Phylogenetic regression and phylogenetic ANOVA are for:
+
+- a continuous response variable
+- using 0, 1 or more predictor variables, which can be continuous or discrete
+
+Here, we can do this when the phylogeny is a network.
+The residuals are assumed to be phylogenetically correlated.
+Residuals capture the variation in the response that deviate from
+the prediction using the predictor variables.
+
+In this tutorial, we will use the following continuous traits:
+
+- response: leaflet length or width, which were log-transformed
+  to obtain a more normal distribution within each species morph,
+  and a more homogeneous variance across species morphs.
+  A combined trait, log(leaflet area) was calculated from leaflet length and
+  width through the formula `area ≈ π length/2 × width/2`.  
+  For this tutorial, we will focus on leaflet length (log-transformed)
+  for the response variable.
+- possible predictors: elevation and latitude.
+
+We will use our calibrated network. If you did not run the previous section
+or started a new julia session, we can read this network from file:
+```{julia}
+net = readTopology("data/polemonium_network_calibrated.phy");
+```
+
+## match taxon names
+
+We start with the case when we have 1 value per species ---morph in our case.
+
+```{julia}
+traits_morph = CSV.read("data/polemonium_traits_morph.csv", DataFrame)
+select!(traits_morph, :morph, :llength, :elevation, :lat)
+first(traits_morph, 4)
+```
+
+Taxon names are in the column "morph", but don't match exactly with the
+names in the network ---somethign quite typical.
+
+```{julia}
+setdiff(tipLabels(net), traits_morph.morph) # names in the network but not in trait df
+```
+```{julia}
+setdiff(traits_morph.morph, tipLabels(net)) # names in trait df but not in network
+```
+
+We notice that some taxa in the network have a suffix "_2" that is not in the
+trait data, and that the trait data has extra species.
+
+Let's use a regular expression to remove the suffix "_2" from the tip names
+in the network:
+```{julia}
+for tip in net.node
+  tip.name = replace(tip.name, r"_2$" => s"") # s"" to substitute what was found with nothing
+end
+issubset(tipLabels(net), traits_morph.morph) # true: all taxa in the network have data
+```
+
+Finally, let's reduce our data frame to morphs that are in the network,
+also something often needed:
+```{julia}
+subset!(traits_morph, :morph => ByRow(in(tipLabels(net))))
+```
+
+## phylogenetic regression
+
+Let's fit our model: a Browian motion by default.
+The output shows the estimated parameters,
+confidence intervals for the regression coefficients, and other summary.
+
+```{julia}
+fit_bm    = phylolm(@formula(llength ~ elevation + lat), traits_morph, net;
+                    tipnames=:morph) # default model: BM
+```
+
+Pagel's lambda model can be fitted if the phylogeny is a time-consistent
+network (all paths from the root to a given node have the same length)
+and ultrametric:
+
+```{julia}
+fit_pagel = phylolm(@formula(llength ~ elevation + lat), traits_morph, net;
+                    model="lambda", tipnames=:morph)
+```
+
+- Which model seems best, based on AIC?
+- What is the estimate of λ, and what does it mean?
+- Which predictors seem to be correlated with log-leaflet-length, based on
+  Wald-type tests?
+
+## accounting for within-species variation
+
+If we have access to traits at the individual level, rather than aggregated
+at the species level, then we can account for within-species variation.
+It's best to do so, because ignoring within-species variation (when present)
+can cause various biases.
+
+We start by reading the individual trait data and removing rows for taxa
+not in the network.
+
+```{julia}
+traits_indiv = CSV.read("data/polemonium_traits_individual.csv", DataFrame)
+subset!(traits_indiv, :morph => ByRow(in(tipLabels(net))))
+last(traits_indiv, 4)
+```
+
+Here, the predictors (elevation and latitude) have the same value for
+all individuals within a species: entered as the average elevation and
+latiture across a much much bigger sample size for each species.
+The model below accounts for within-species variation in the response variable,
+not in the predictor variables.
+
+```{julia}
+fit_ind = phylolm(@formula(llength ~ elevation + lat), traits_indiv, net;
+                  tipnames=:morph, withinspecies_var=true)
+```
+
+- What are the estimated variances?
+- Did the estimated regression coefficients change much compared to the previous
+  analysis at the species level?
+- How about the strength of evidence that they correlate with log-leaflet-length,
+  based on Wald-type tests?
+
+## likelihood ratio test
+
+We can get p-values with a likelihood ratio test.
+For likelihood ratio tests, we need to use the ML criterion, not REML,
+to compare models with different "fixed" effects.
+ML tends to underestimate variances compared to REML, however.
+```{julia}
+fit_ml = phylolm(@formula(llength ~ elevation + lat), traits_indiv, net;
+                reml=false, tipnames=:morph, withinspecies_var=true)
+fit_ml_nolat = phylolm(@formula(llength ~ elevation), traits_indiv, net;
+                reml=false, tipnames=:morph, withinspecies_var=true)
+lrtest(fit_ml_nolat, fit_ml)
+```
+
+
+## within-species variation using species summaries
+
+The data we used above has 1 row per individual,
+which can lead to a very large data set (considering that we have 17 species):
+```{julia}
+nrow(traits_indiv)
+```
+and sometimes we don't have this fine-grained individual-level information anyway.
+In fact, the method only needs to know the sample size, observed mean and variance
+of the response trait (log-leaflet-length) within each species.
+Let's illustrate how to summarize our data with 1 row per species
+and extra columns: the number of sampled individuals, their mean and variance
+within each morph.
+
+```{julia}
+num_nonmissing = x -> length(.!(ismissing.(x)))
+traits_meanstd = combine( groupby(traits_indiv, :morph),
+  :llength => mean => :llength, # last term = new column name
+  :llength => std => :llength_sd,
+  :llength => num_nonmissing => :llength_n,
+  :elevation => mean => :elevation,
+  :lat => mean => :lat
+)
+```
+
+We can use this input data to fit our phylogenetic regression, thanks
+to the option `y_mean_std=true`. This format requires 3 columns for the response
+variable, containing:
+
+- the mean (one row per species): `llength` in our case
+- the standard deviation (SD, square-root of the variance) named with
+  suffix "_sd", `llength_sd` in our case,
+- the sample size, that is, the number of individuals from which the mean and
+  SDs were calculated, named with suffix "_n", so `llength_n` in our case.
+
+Now we fit the model as above using our summarized dataset,
+except that we use option `y_mean_std=true`
+to let the function know about the format, and get the same results as before:
+```{julia}
+phylolm(@formula(llength ~ elevation + lat), traits_meanstd, net; # same result as fit_ind
+        tipnames=:morph, withinspecies_var=true, y_mean_std=true)
+```

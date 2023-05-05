@@ -16,7 +16,7 @@ We will use methods implemented [PhyloNetworks](https://github.com/crsl4/PhyloNe
 You can find and clone the workshop material at this
 [github repository](https://github.com/cecileane/networkPCM-workshop).
 
-### preparation
+## preparation
 
 What you should do prior to the workshop:
 
@@ -24,17 +24,96 @@ What you should do prior to the workshop:
   and add it to your [`PATH`](https://julialang.org/downloads/platform/#optional_add_julia_to_path)
 - install [VSCode](https://code.visualstudio.com/download)
   or another editor, if you don't have one already.
+- install [R](https://cran.r-project.org)
+
+### customize VSCode
 
 If you use VSCode, like we will demonstrate, then within VSCode:
 
-- add `code` to your `PATH`, by opening the command palette then
-  searching for "shell command"
-- within VSCode, install the [Julia extension](https://www.julia-vscode.org/docs/stable/setup/)
-  and the [Quarto extension](https://marketplace.visualstudio.com/items?itemName=quarto.quarto).
+- add `code` to your `PATH`, by opening the command palette (⇧⌘P or Ctrl+Shift+P)
+  then searching for "shell command".
+  After this step, you can open any folder or document with VSCode by typing
+  `code filename` or `code foldername` in the shell.
+- within VSCode, install the
+  [Julia extension](https://www.julia-vscode.org/docs/stable/setup/)
+- you may consider installing
+  [Quarto extension](https://marketplace.visualstudio.com/items?itemName=quarto.quarto)
+  but this is not necessary for this workshop
+  ---or other cool extensions! e.g. for R, for Python,
+  for [LaTeX](https://github.com/James-Yu/LaTeX-Workshop/wiki/Install), etc.
 
-Install Julia and some packages:
+### download workshop files
 
-- Open julia, either in a terminal, or terminal integrated
-  in VSCode, or by opening the app
-- within julia, install [PhyloNetworks](http://crsl4.github.io/PhyloNetworks.jl/latest/man/installation/)
-  and [PhyloPlots](https://cecileane.github.io/PhyloPlots.jl/stable/man/installation/#Installation).
+Download the data and other files for this workshop.
+Below we explain 2 alternatives ways: using the shell, or not.
+
+- using the shell and cloning with git:
+  * In the shell, navigate (`cd`) to a place on your machine where you want to
+    get the folder.  
+    This should **not** be inside an already existing git repository.
+    To know if we are inside a git folder, we can do `git status`.
+    We want to get an error message, which would mean that we are not in a git repo.  
+  * clone the workshop files with:
+    `git clone git@github.com:cecileane/networkPCM-workshop.git`.
+    This command will create a folder `networkPCM-workshop` with the data
+    and `.qmd` (quarto markdown) files containing the code rendered on this
+    website.
+  * go into that folder: `cd networkPCM-workshop`
+- without the shell:
+  * [download](https://github.com/cecileane/networkPCM-workshop/archive/refs/heads/main.zip)
+    the folder and unzip it.
+    Its default name may be `networkPCM-workshop-main`.
+  * move it somewhere and/or rename it if desired, to organize your projects
+  * open that folder or go inside, or open it with VSCode.
+
+The data are in folder `data`.
+The code is in files named like `topic*.qmd`.
+
+### install packages
+
+Open julia, e.g. in a terminal integrated in VSCode. Preferably, open julia
+from the workshop directory (cloned or downloaded earlier)
+to make it easier to use this directory as a julia environment.
+
+Then within julia, install packages including
+[PhyloNetworks](http://crsl4.github.io/PhyloNetworks.jl/latest/man/installation/)
+and
+[PhyloPlots](https://cecileane.github.io/PhyloPlots.jl/stable/man/installation/#Installation).
+For this, we suggest using the environment provided in this tutorial,
+which consists of the two `.toml` files that lists which packages to install
+(in `Project.toml`) and which versions exactly (in `Manifest.toml`).
+These installations will not interfere with other ways you might be using julia.
+Here is how:
+
+- type `]` to switch to package mode
+- type `activate .` if your current directory is the workshop folder.
+  Otherwise, type `activate path-to-workshop-folder` to activate
+  the workshop folder as the current julia environment for packages.
+- type `instantiate`: this command will read the `.toml` files and install
+  the packages given by these files, at the specific versions listed in these
+  files. It will pre-compile them for the environment, in a way that won't
+  interfere with other julia environments (if any).
+
+Alternatively, if you want to install these packages in the default or any
+other environment, type `]` to switch to package mode. Julia will show a prompt
+like this: `(networkPCM-workshop) pkg>` showing the name of the folder used
+as environment, followed by "pkg>" to mean that it's in package mode.
+Then type this:
+```julia
+add CSV, CategoricalArrays, DataFrames
+add Distributions, StatsBase, StatsModels
+add RCall, PhyloNetworks, PhyloPlots,
+```
+Installation may take a while, especially if internet is slow.
+
+After this is done, type delete or backspace to go back to julian mode
+(exit from package mode). The julia prompt will go back to `julia>`.
+
+
+We will make use of R within Julia, and of some R functions
+in specific R packages.
+Install the `ape` and `viridis` packages in R:
+```r
+R> install.packages("viridis")
+R> install.packages("ape")
+```
