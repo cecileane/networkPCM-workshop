@@ -228,6 +228,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="./topic6-visualization.html" class="sidebar-item-text sidebar-link">Visualization</a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topic7-averagedistances.html" class="sidebar-item-text sidebar-link">Average distances</a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -379,135 +384,28 @@ log-likelihood: -10.83348</code></pre>
 <h2 class="anchored" data-anchor-id="effect-of-gene-flow">effect of gene flow</h2>
 <p>What is the evidence that a trait was inherited via gene flow (along the minor hybrid edge) versus “vertically” (via the major hybrid edge)?</p>
 <p>To answer this question, we can extract the prior probability of either option, and the posterior probabilities conditional on the data. Then, the Bayes factor to compare the 2 hypotheses, minor versus major edge (or gene flow versus vertical), can be expressed as an odds ratio: <span class="math display">\[\mathrm{BF} = \frac{P(\mathrm{data} \mid \mathrm{minor})}{P(\mathrm{data} \mid \mathrm{mafor})} = \frac{\frac{P(\mathrm{minor} \mid \mathrm{data})}{P(\mathrm{major}\mid\mathrm{data})}}{\frac{P(\mathrm{minor})}{P(\mathrm{major})}}\,.\]</span></p>
-<p>Here, let’s say we want to focus on the reticulation that is ancestral to elusum (node 33, H20). From <a href="#fig-5-asr1">Figure&nbsp;1</a> (left) we see that the major (“vertical”) parent edge has γ = 0.741 = P(major) and the minor (“gene flow”) edge has γ = 0.259 = P(minor). So at this reticulation, the prior odds of the trait being inherited via gene flow is 0.259/0.741 = 0.35.</p>
-<p>To extract the posterior odds and calculate the Bayes factor, there is no easy one-step function to do this (currently) because our network has other reticulations than the one we want to focus one. But we can consider all the different histories for the trait, and separate them into the 2 options at the reticulation of interest, as shown below.</p>
-<p>With the 3 reticulations in our network, there are 8 displayed trees, that is, 8 options that the trait could have been inherited (or not) via gene flow. For each tree, its prior is the product of the γ’s of the edges retained in that tree. The log of these tree weights are stored in the fitted object, and can be recovered like this:</p>
+<p>Here, let’s say we want to focus on the reticulation that is ancestral to elusum (node 33, H20). From <a href="#fig-5-asr1">Figure&nbsp;1</a> (left) we see that the major (“vertical”) parent edge has γ = 0.741 = P(major) and the minor (“gene flow”) edge has γ = 0.259 = P(minor). So at this reticulation, the prior odds of the trait being inherited via gene flow is 0.259/0.741 = 0.35. Here how we may get this prior odds programmatically:</p>
 <div class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>treeprior <span class="op">=</span> <span class="fu">exp</span>.(fit.priorltw)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>nodeH20 <span class="op">=</span> net.node[<span class="fu">findfirst</span>(n<span class="op">-&gt;</span>n.name<span class="op">==</span><span class="st">"H20"</span>, net.node)] <span class="co"># find node named H20</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>priorminor <span class="op">=</span> <span class="fu">getparentedgeminor</span>(nodeH20).gamma            <span class="co"># γ of its minor parent</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>priorodds <span class="op">=</span> priorminor <span class="op">/</span> (<span class="fl">1</span><span class="op">-</span>priorminor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="10">
-<pre><code>8-element Vector{Float64}:
- 0.26562140938413403
- 0.12975459748802168
- 0.092949728358647
- 0.045405431052266666
- 0.23204750366423602
- 0.11335392921023955
- 0.08120110680047173
- 0.03966629404198325</code></pre>
+<pre><code>0.34993311937527516</code></pre>
 </div>
 </div>
-<p>Well, we also need to know in which order the 8 trees are listed. These trees are stored, in that order, in <code>fit.displayedtree</code>:</p>
-<div>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>R<span class="st">"par"</span>(mar<span class="op">=</span>[<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>]);</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i,tre) <span class="kw">in</span> <span class="fu">enumerate</span>(fit.displayedtree)</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  formerhybrid <span class="op">=</span> <span class="fu">findall</span>(<span class="cn">e</span> <span class="op">-&gt;</span> <span class="cn">e</span>.gamma <span class="op">!=</span> <span class="fl">1.0</span>, tre.edge)</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  gamma_df <span class="op">=</span> <span class="fu">DataFrame</span>(</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    edgenumber <span class="op">=</span> [tre.edge[i].number for i <span class="kw">in</span> formerhybrid],</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    edgegamma  <span class="op">=</span> [tre.edge[i].gamma  for i <span class="kw">in</span> formerhybrid])</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(tre, tipoffset<span class="op">=</span><span class="fl">0.1</span>, edgelabel<span class="op">=</span>gamma_df)</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  tp <span class="op">=</span> <span class="fu">round</span>(treeprior[i], digits<span class="op">=</span><span class="fl">2</span>)</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  R<span class="st">"mtext"</span>(<span class="st">"tree </span><span class="sc">$</span>i<span class="st">, prior: </span><span class="sc">$</span>tp<span class="st">"</span>, side<span class="op">=</span><span class="fl">3</span>, line<span class="op">=-</span><span class="fl">2</span>, adj<span class="op">=</span><span class="fl">0.1</span>, xlim<span class="op">=</span>[<span class="fl">1</span>,<span class="fl">15</span>])</span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div id="fig-5-displayedtrees" class="cell quarto-layout-panel" data-execution_count="10">
-<figure class="figure">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
-<div id="fig-5-displayedtrees-1" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="topic5-discrete_files/figure-html/fig-5-displayedtrees-output-1.png" class="img-fluid figure-img" data-ref-parent="fig-5-displayedtrees"></p>
-<p></p><figcaption class="figure-caption">(a) tree 1</figcaption><p></p>
-</figure>
+<p>To extract the posterior odds and calculate the Bayes factor, we can do as follows, to focus on just 1 reticulation of interest and integrate out what happened at other reticulations:</p>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>postminor <span class="op">=</span> <span class="fu">exp</span>(PhyloNetworks.<span class="fu">posterior_loghybridweight</span>(fit, <span class="st">"H20"</span>))</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>postodds <span class="op">=</span> postminor <span class="op">/</span> (<span class="fl">1</span><span class="op">-</span>postminor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<pre><code>0.6298935555430331</code></pre>
 </div>
 </div>
-<div class="cell-output cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
-<div id="fig-5-displayedtrees-2" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="topic5-discrete_files/figure-html/fig-5-displayedtrees-output-2.png" class="img-fluid figure-img" data-ref-parent="fig-5-displayedtrees"></p>
-<p></p><figcaption class="figure-caption">(b) tree 2</figcaption><p></p>
-</figure>
-</div>
-</div>
-</div>
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
-<div id="fig-5-displayedtrees-3" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="topic5-discrete_files/figure-html/fig-5-displayedtrees-output-3.png" class="img-fluid figure-img" data-ref-parent="fig-5-displayedtrees"></p>
-<p></p><figcaption class="figure-caption">(c) tree 3</figcaption><p></p>
-</figure>
-</div>
-</div>
-<div class="cell-output cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
-<div id="fig-5-displayedtrees-4" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="topic5-discrete_files/figure-html/fig-5-displayedtrees-output-4.png" class="img-fluid figure-img" data-ref-parent="fig-5-displayedtrees"></p>
-<p></p><figcaption class="figure-caption">(d) tree 4</figcaption><p></p>
-</figure>
-</div>
-</div>
-</div>
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
-<div id="fig-5-displayedtrees-5" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="topic5-discrete_files/figure-html/fig-5-displayedtrees-output-5.png" class="img-fluid figure-img" data-ref-parent="fig-5-displayedtrees"></p>
-<p></p><figcaption class="figure-caption">(e) tree 5</figcaption><p></p>
-</figure>
-</div>
-</div>
-<div class="cell-output cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
-<div id="fig-5-displayedtrees-6" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="topic5-discrete_files/figure-html/fig-5-displayedtrees-output-6.png" class="img-fluid figure-img" data-ref-parent="fig-5-displayedtrees"></p>
-<p></p><figcaption class="figure-caption">(f) tree 6</figcaption><p></p>
-</figure>
-</div>
-</div>
-</div>
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
-<div id="fig-5-displayedtrees-7" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="topic5-discrete_files/figure-html/fig-5-displayedtrees-output-7.png" class="img-fluid figure-img" data-ref-parent="fig-5-displayedtrees"></p>
-<p></p><figcaption class="figure-caption">(g) tree 7</figcaption><p></p>
-</figure>
-</div>
-</div>
-<div class="cell-output cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
-<div id="fig-5-displayedtrees-8" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="topic5-discrete_files/figure-html/fig-5-displayedtrees-output-8.png" class="img-fluid figure-img" data-ref-parent="fig-5-displayedtrees"></p>
-<p></p><figcaption class="figure-caption">(h) tree 8</figcaption><p></p>
-</figure>
-</div>
-</div>
-</div>
-<p></p><figcaption class="figure-caption">Figure&nbsp;2: displayed trees stored in the fitted object</figcaption><p></p>
-</figure>
-</div>
-</div>
-<p>We see that trees 1,2, and 5,6 have the major edge at our reticulation of interest (to elusum, γ=0.741), and trees 3,4, 7,8 have the minor edge (γ=0.259). We can check that this is correct by calculating the prior odds and see if we recover what we expect: <span class="math inline">\(\frac{P(\mathrm{minor})}{P(\mathrm{major})} = 0.259/0.741 = 0.35\)</span></p>
+<p>That’s an increase. The Bayes factor to compare the gene flow (minor edge) versus vertical (major edge) hypotheses is then:</p>
 <div class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>minortrees <span class="op">=</span> [<span class="fl">3</span>,<span class="fl">4</span>, <span class="fl">7</span>,<span class="fl">8</span>]</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>majortrees <span class="op">=</span> [<span class="fl">1</span>,<span class="fl">2</span>, <span class="fl">5</span>,<span class="fl">6</span>]</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>priorodds <span class="op">=</span> <span class="fu">sum</span>(treeprior[minortrees]) <span class="op">/</span> <span class="fu">sum</span>(treeprior[majortrees])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>postodds <span class="op">/</span> priorodds</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="12">
-<pre><code>0.3499331193752752</code></pre>
-</div>
-</div>
-<p>Good. So we have a correct listing of trees with the minor edge (gene flow) versus major edge (vertical inhetirance) at our reticulation of interest. Now let’s use it to get the posterior odds:</p>
-<div class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>treepost <span class="op">=</span> <span class="fu">exp</span>.(PhyloNetworks.<span class="fu">posterior_logtreeweight</span>(fit))</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>postodds <span class="op">=</span> <span class="fu">sum</span>(treepost[minortrees]) <span class="op">/</span> <span class="fu">sum</span>(treepost[majortrees])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="13">
-<pre><code>0.6298935555430336</code></pre>
-</div>
-</div>
-<p>That’s an increase. The Bayes factor to compare the gene flow versus vertical hypotheses is then:</p>
-<div class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>postodds <span class="op">/</span> priorodds</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="14">
-<pre><code>1.800039838091242</code></pre>
+<pre><code>1.8000398380912406</code></pre>
 </div>
 </div>
 <p>It’s above 1, so there’s evidence of inheritance via gene flow, but not very much above 1 (e.g.&nbsp;less than 3), so it’s equivocal evidence only.</p>

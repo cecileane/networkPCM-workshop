@@ -227,6 +227,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="./topic6-visualization.html" class="sidebar-item-text sidebar-link">Visualization</a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topic7-averagedistances.html" class="sidebar-item-text sidebar-link">Average distances</a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -388,7 +393,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="input-genetic-distances" class="level2">
 <h2 class="anchored" data-anchor-id="input-genetic-distances">input genetic distances</h2>
 <p>To calibrate the network, we need genetic distances estimated between each pair of taxa. The calibration will find edge lengths in the network to match as best as possible these input pairwise distances between taxa.</p>
-<p>These distances were obtained by estimating a gene tree for each gene, rescaling the gene trees to decrease rate variation across genes, extracting the pairwise distances from each rescaled gene tree, then average the pairwise distances across genes. The results were saved in file <code>data/polemonium_geneticpairwisedistances.csv</code>, which we read below.</p>
+<p>These distances were obtained by estimating a gene tree for each gene, rescaling the gene trees to decrease rate variation across genes, extracting the pairwise distances from each rescaled gene tree, then average the pairwise distances across genes (see <a href="./topic7-averagedistances.html">here</a> for how to do this). The results were saved in file <code>data/polemonium_geneticpairwisedistances.csv</code>, which we read below.</p>
 <div class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>avD <span class="op">=</span> CSV.<span class="fu">read</span>(<span class="st">"data/polemonium_geneticpairwisedistances.csv"</span>, DataFrame);</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>taxa_long <span class="op">=</span> <span class="fu">names</span>(avD) <span class="co"># column names</span></span>

@@ -227,6 +227,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="./topic6-visualization.html" class="sidebar-item-text sidebar-link">Visualization</a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topic7-averagedistances.html" class="sidebar-item-text sidebar-link">Average distances</a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -483,7 +488,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>(674.853189498432, 675.4984901526377)</code></pre>
 </div>
 </div>
-<p>Note that we fitted the no-shift model with the same data <code>df</code> as the shifted model. The taxa are listed in a different order in <code>df</code> and in the original <code>traits</code> data frame. It helps to use the same data frame for later comparisons. For example, we could run a likelihood ratio test (<code>lrtest</code>) to compare the two models, altough that we would require re-fitting them with ML method instead of the default REML.</p>
+<p>Note that we fitted the no-shift model with the same data <code>df</code> as the shifted model. The taxa are listed in a different order in <code>df</code> and in the original <code>traits</code> data frame. It helps to use the same data frame for later comparisons. For example, we could run a likelihood ratio test (<code>lrtest</code>) to compare the two models, altough that we requires re-fitting them with ML method instead of the default REML:</p>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>fit_noshift_ML <span class="op">=</span> <span class="fu">phylolm</span>(<span class="pp">@formula</span>(llength <span class="op">~</span> <span class="fl">1</span>), df, net, tipnames<span class="op">=:</span>morph,</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>          reml<span class="op">=</span><span class="cn">false</span>, withinspecies_var<span class="op">=</span><span class="cn">true</span>, y_mean_std<span class="op">=</span><span class="cn">true</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>fit_sh8_ML <span class="op">=</span> <span class="fu">phylolm</span>(<span class="pp">@formula</span>(llength <span class="op">~</span> shift_8), df, net, tipnames<span class="op">=:</span>morph,</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>          reml<span class="op">=</span><span class="cn">false</span>, withinspecies_var<span class="op">=</span><span class="cn">true</span>, y_mean_std<span class="op">=</span><span class="cn">true</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="fu">lrtest</span>(fit_noshift_ML, fit_sh8_ML)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<pre><code>Likelihood-ratio test: 2 models fitted on 954 observations
+──────────────────────────────────────────────────────
+     DOF  ΔDOF     LogLik  Deviance   Chisq  p(&gt;Chisq)
+──────────────────────────────────────────────────────
+[1]    3        -334.6010  669.2021                   
+[2]    4     1  -334.3393  668.6785  0.5235     0.4693
+──────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
 
 
 </section>

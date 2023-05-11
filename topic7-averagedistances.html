@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Comparative methods on networks - Average distances</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./topic6-visualization.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Comparative methods on networks</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="./index.html" aria-current="page">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="http://crsl4.github.io/PhyloNetworks.jl/latest/">
+ <span class="menu-text">PhyloNetworks</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/cecileane/networkPCM-workshop"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Average distances</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation docked overflow-auto">
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Home</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topic-overview.html" class="sidebar-item-text sidebar-link">Workshop overview</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topic1-netcalibration.html" class="sidebar-item-text sidebar-link">Network calibration</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topic2-phyloANOVA.html" class="sidebar-item-text sidebar-link">Phylogenetic regression</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topic3-asr.html" class="sidebar-item-text sidebar-link">Ancestral state reconstruction</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topic4-impactgeneflow.html" class="sidebar-item-text sidebar-link">Impact of gene flow</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topic5-discrete.html" class="sidebar-item-text sidebar-link">Discrete trait</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topic6-visualization.html" class="sidebar-item-text sidebar-link">Visualization</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./topic7-averagedistances.html" class="sidebar-item-text sidebar-link active">Average distances</a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Average distances</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell" data-execution_count="1">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># code from prior sections: load packages used here</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CSV</span>, <span class="bu">DataFrames</span>, <span class="bu">PhyloNetworks</span>, <span class="bu">StatsBase</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>This extra section provides example code to estimate genetic distances from gene trees, which them may later be used to <a href="./topic1-netcalibration.html#input-genetic-distances">calibrate</a> a network.</p>
+<p>Using gene trees from multiple loci may be best when loci are sufficiently informative. With short loci or with loci with few informative sites, some branch lengths may often be underestimated at 0 due to a lack of variable sites, in which case it may be best to estimate genetic distances from the multiple alignment directly.</p>
+<p>If loci are sufficiently informative, estimating a gene tree from each locus may help reduce noise in the estimated distances (e.g.&nbsp;account for multiple substitutions along the same lineage). It can also decrease the influence of fast-evolving genes, and rate variation across genes more generally.</p>
+<p>We first define helper functions for computing pairwise distances, to - get a matrix pairwise distances from each tree - normalize these distance matrices, so they all have a similar distance between the ingroup and outgroup taxa - average distance matrices across genes. These functions were originally developed by <a href="https://doi.org/10.1093/sysbio/syz073">Karimi et al.&nbsp;(2020)</a>. Their <a href="https://github.com/nkarimi/Adansonia_HybSeq/blob/master/trait-evolution/calibration.jl">code</a> was slightly modified here. To load these helper functions: unfold the code below, then copy &amp; paste into your julia session.</p>
+<div class="cell" data-execution_count="2">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="st">    getpairwisedistances(genetrees, taxa)</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="st">Return a tuple of 3 objects:</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="st">1. A vector `D` of matrices, one per gene tree, containing the pairwise distance</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="st">   between all pairs of `taxa`. If taxon i is missing from tree `k`, then the</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="st">   distance matrix `D[k]` for that tree will have zeros on its ith row and ith column.</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="st">   In each matrix, row &amp; column `i` correspond to `taxa[i]`, that is, taxa are</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="st">   listed in the same order as in the input `taxa`.</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="st">2. A matrix `ngenes` containing the number of genes with data on the pair</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="st">   of taxa (i,j) in row i, column j</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="st">3. A vector of integers, giving the index of gene trees with some missing taxa.</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="st">This function uses `pairwiseTaxonDistanceMatrix(tree)` from `PhyloNetworks`,</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="st">which outputs a matrix in which the rows correspond to taxa in the order in</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="st">which they come in `tipLabels(tree)`.</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="st">It then takes care of the fact that taxa may not be listed in the same order by</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="st">`tipLabels` across all gene trees.</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">getpairwisedistances</span>(genetrees, taxa)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  ntips <span class="op">=</span> <span class="fu">length</span>(taxa)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  D <span class="op">=</span> <span class="dt">Array</span>{<span class="dt">Float64</span>,<span class="fl">2</span>}[]; <span class="co"># empty vector. will contain all distance matrices</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  ngenes <span class="op">=</span> <span class="fu">zeros</span>(<span class="dt">Int</span>, ntips, ntips) <span class="co"># number of genes that have data for each pair</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  geneind <span class="op">=</span> <span class="dt">Int</span>[];        <span class="co"># indices of genes with missing taxa</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  istaxonmissing <span class="op">=</span> <span class="fu">Vector</span><span class="dt">{Bool}</span>(<span class="cn">undef</span>, ntips) <span class="co"># to be modified in place for each gene</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (g_index,g) <span class="kw">in</span> <span class="fu">enumerate</span>(genetrees)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    M <span class="op">=</span> <span class="fu">zeros</span>(ntips,ntips) <span class="co"># initialized at 0.0: for missing pairs</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    taxnames <span class="op">=</span> <span class="fu">tipLabels</span>(g)</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    tipind <span class="op">=</span> <span class="dt">Int</span>[]</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>ntips</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>      j <span class="op">=</span> <span class="fu">findfirst</span>(<span class="fu">isequal</span>(taxa[k]), taxnames)</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>      notfound <span class="op">=</span> <span class="fu">isnothing</span>(j)</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>      istaxonmissing[k] <span class="op">=</span> notfound <span class="co"># modified in place</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>      notfound <span class="op">||</span> <span class="fu">push!</span>(tipind, j) <span class="co"># add j to tipind if taxa[k] was found</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    M[.!istaxonmissing, .!istaxonmissing] <span class="op">=</span> <span class="fu">pairwiseTaxonDistanceMatrix</span>(g)[tipind,tipind]</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    ngenes[.!istaxonmissing, .!istaxonmissing] <span class="op">.+=</span> <span class="fl">1</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">any</span>(istaxonmissing) <span class="op">&amp;&amp;</span> <span class="fu">push!</span>(geneind,g_index)</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">push!</span>(D, M)</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> D, ngenes, geneind</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="st">    normalizedistances_outgroup2ingroup!(D; taxa, ingroup, outgroup)</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="st">Rescale each input distance matrix `D[k]`, such that all have the same</span></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="st">median patristic distance between outgroup taxa and ingroup taxa.</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a><span class="st">Input: `D` should be a vector of pairwise distances matrices, one per gene</span></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a><span class="st">(modified by the function).</span></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a><span class="st">Output: vector of original median ingroup-outgroup distance, one per gene.</span></span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a><span class="st">Why the *median*? So that one taxon or one small clade with an unusually large</span></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a><span class="st">(or low) substitution rate does have an undue influence on the scaling factor.</span></span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a><span class="st">Assumptions:</span></span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a><span class="st">- all trees have at least 1 outgroup and 1 ingroup</span></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a><span class="st">- row &amp; column `i` in D[k] (for gene k) correspond to `taxa[i]`</span></span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a><span class="st">- `D[k][i,j]` = 0 if gene `k` doesn't have both taxa `i` and `j`</span></span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a><span class="st">- `ingroup` and `outgroup` are sets. The function does *not* check whether they</span></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a><span class="st">  are subsets of `taxa`, or don't overlap, or cover the full set of `taxa`.</span></span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">normalizedistances_outgroup2ingroup!</span>(D; taxa, ingroup, outgroup)</span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>  ntax <span class="op">=</span> <span class="fu">length</span>(taxa)</span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>  inding <span class="op">=</span> <span class="fu">findall</span>(<span class="fu">in</span>(ingroup),  taxa) <span class="co"># indices of ingroup  taxa</span></span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>  indout <span class="op">=</span> <span class="fu">findall</span>(<span class="fu">in</span>(outgroup), taxa) <span class="co"># indices of outgroup taxa</span></span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>  medianingroup2outgroup <span class="op">=</span> <span class="dt">Float64</span>[]   <span class="co"># will contain 1 median per gene</span></span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> dm <span class="kw">in</span> D <span class="co"># dm = distance matrix</span></span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>    <span class="fu">size</span>(dm) <span class="op">=</span> (ntax,ntax) <span class="op">||</span> <span class="fu">error</span>(<span class="st">"there's a distance matrix with wrong dimensions: </span><span class="sc">$</span>(<span class="fu">size</span>(dm))<span class="st">"</span>)</span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>    absent <span class="op">=</span> <span class="fu">findall</span>([<span class="fu">all</span>(dm[<span class="op">:</span>,i] <span class="op">.==</span> <span class="fl">0.0</span>) for i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>ntax])</span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>    <span class="fu">push!</span>(medianingroup2outgroup,</span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>          <span class="fu">median</span>(dm[<span class="fu">setdiff</span>(inding, absent), <span class="fu">setdiff</span>(indout, absent)]) )</span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>  mi2o <span class="op">=</span> <span class="fu">mean</span>(medianingroup2outgroup)</span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> k <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu">length</span>(D)</span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>    D[k] <span class="op">.*=</span> mi2o<span class="op">/</span>medianingroup2outgroup[k]</span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> medianingroup2outgroup</span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a><span class="st">    averagepairwisedistances(D, ngenes)</span></span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a><span class="st">Matrix `M` containing the average pairwise distances, weighted by number of</span></span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a><span class="st">genes with data on the pair: M[i,j] = (sum_k D[k][i,j] ) / ngenes[i,j].</span></span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a><span class="st">This is because for each pair of taxa `i,j`, it is assumed that a number</span></span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a><span class="st">`ngenes[i,j]` of genes (indexed by k) contributed data for the pair, and</span></span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a><span class="st">the other genes without both taxa i and j had D[k][i,j]=0.</span></span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">averagepairwisedistances</span>(D, ngenes)</span>
+<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">sum</span>(D) <span class="op">./</span> ngenes</span>
+<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>This tutorial comes with a small sample of gene trees, some of them modified so as to illustrate the case when taxa are missing from some genes. These gene tree files are in folder <code>data/genetrees_sample</code>, and are majority-rule consensus trees in nexus format created by MrBayes. This is only to give example code to read gene tree files and calculate distances. In practice, the majority-rule creates edges of length 0 (polytomies) when there is less than 50% credibility for a resolution in the gene tree, so this is underestimating the true edge length, and a full consensus tree may be a better option.</p>
+<p>Below, we show how to read these files using <code>readNexusTrees</code> because of the nexus format. This function is meant to read a sample of multiple trees (or multiple networks), so it returns a list. We only use the first and only tree in this list. As we can see, loci 10 and 20 are missing a few taxa.</p>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>genetreefolder <span class="op">=</span> <span class="fu">joinpath</span>(<span class="st">"data"</span>,<span class="st">"genetrees_sample"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># list the content of this folder, and filter to keep files ending in ".tre":</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>genetreefiles <span class="op">=</span> <span class="fu">filter</span>(x <span class="op">-&gt;</span> <span class="fu">endswith</span>(x,<span class="st">".tre"</span>), <span class="fu">readdir</span>(genetreefolder))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(genetreefiles) <span class="co"># 19 files: L22 missing</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">read1gene</span>(filename)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  genetreefile <span class="op">=</span> <span class="fu">joinpath</span>(genetreefolder, filename)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">readNexusTrees</span>(genetreefile)[<span class="fl">1</span>] <span class="co"># first and only tree in the list</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>genetrees <span class="op">=</span> <span class="fu">map</span>(read1gene, genetreefiles)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (filename,tree) <span class="kw">in</span> <span class="fu">zip</span>(genetreefiles, genetrees)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">println</span>(<span class="st">"</span><span class="sc">$</span>filename<span class="st">: </span><span class="sc">$</span>(tree.numTaxa)<span class="st"> taxa"</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>T405_L10.nex.con.tre: 14 taxa
+T405_L11.nex.con.tre: 17 taxa
+T405_L12.nex.con.tre: 17 taxa
+T405_L13.nex.con.tre: 17 taxa
+T405_L14.nex.con.tre: 17 taxa
+T405_L15.nex.con.tre: 17 taxa
+T405_L16.nex.con.tre: 17 taxa
+T405_L17.nex.con.tre: 17 taxa
+T405_L18.nex.con.tre: 17 taxa
+T405_L19.nex.con.tre: 17 taxa
+T405_L20.nex.con.tre: 16 taxa
+T405_L21.nex.con.tre: 17 taxa
+T405_L23.nex.con.tre: 17 taxa
+T405_L24.nex.con.tre: 17 taxa
+T405_L25.nex.con.tre: 17 taxa
+T405_L26.nex.con.tre: 17 taxa
+T405_L27.nex.con.tre: 17 taxa
+T405_L28.nex.con.tre: 17 taxa
+T405_L29.nex.con.tre: 17 taxa</code></pre>
+</div>
+</div>
+<p>To convert each tree to a matrix of pairwise distances, we first need to decide the order in which the taxa should be listed.</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>taxa_long <span class="op">=</span> <span class="fu">sort!</span>(<span class="fu">union</span>([<span class="fu">tipLabels</span>(tree) for tree <span class="kw">in</span> genetrees]<span class="op">...</span>))</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>D, ngenes, geneind <span class="op">=</span> <span class="fu">getpairwisedistances</span>(genetrees, taxa_long);</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>geneind <span class="co"># indices of genes with some missing taxa</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>2-element Vector{Int64}:
+  1
+ 11</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>ngenes <span class="co"># number of genes with data for each pair: 19 for most, some 17's and 18's</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>17×17 Matrix{Int64}:
+ 19  19  19  19  19  19  19  17  18  19  19  19  18  19  19  19  19
+ 19  19  19  19  19  19  19  17  18  19  19  19  18  19  19  19  19
+ 19  19  19  19  19  19  19  17  18  19  19  19  18  19  19  19  19
+ 19  19  19  19  19  19  19  17  18  19  19  19  18  19  19  19  19
+ 19  19  19  19  19  19  19  17  18  19  19  19  18  19  19  19  19
+ 19  19  19  19  19  19  19  17  18  19  19  19  18  19  19  19  19
+ 19  19  19  19  19  19  19  17  18  19  19  19  18  19  19  19  19
+ 17  17  17  17  17  17  17  17  17  17  17  17  17  17  17  17  17
+ 18  18  18  18  18  18  18  17  18  18  18  18  18  18  18  18  18
+ 19  19  19  19  19  19  19  17  18  19  19  19  18  19  19  19  19
+ 19  19  19  19  19  19  19  17  18  19  19  19  18  19  19  19  19
+ 19  19  19  19  19  19  19  17  18  19  19  19  18  19  19  19  19
+ 18  18  18  18  18  18  18  17  18  18  18  18  18  18  18  18  18
+ 19  19  19  19  19  19  19  17  18  19  19  19  18  19  19  19  19
+ 19  19  19  19  19  19  19  17  18  19  19  19  18  19  19  19  19
+ 19  19  19  19  19  19  19  17  18  19  19  19  18  19  19  19  19
+ 19  19  19  19  19  19  19  17  18  19  19  19  18  19  19  19  19</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>D[<span class="fl">11</span>] <span class="co"># distance matrix from 11th gene in the list. if missing taxa, then 0s</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<pre><code>17×17 Matrix{Float64}:
+ 0.0         0.031831   0.0261231  …  0.0407398  0.0113065   0.0381869
+ 0.031831    0.0        0.0191849     0.0272717  0.0307095   0.035106
+ 0.0261231   0.0191849  0.0           0.0280938  0.0250017   0.0293982
+ 0.0407076   0.0376267  0.0319188     0.0465355  0.0395861   0.00606439
+ 0.0324402   0.0293594  0.0236515     0.0382682  0.0313188   0.0283365
+ 0.0402938   0.0372129  0.031505   …  0.0461218  0.0391723   0.029748
+ 0.0107768   0.0301798  0.024472      0.0390887  0.00965534  0.0365358
+ 0.0         0.0        0.0           0.0        0.0         0.0
+ 0.00702223  0.0264253  0.0207174     0.0353341  0.00590078  0.0327812
+ 0.00695353  0.0263566  0.0206487     0.0352654  0.00583209  0.0327125
+ 0.00697372  0.0263767  0.0206689  …  0.0352856  0.00585227  0.0327327
+ 0.0279844   0.0335855  0.0278776     0.0424944  0.0268629   0.0399415
+ 0.00695846  0.0263615  0.0206536     0.0352704  0.00583701  0.0327174
+ 0.0365629   0.0230947  0.0239168     0.0198704  0.0354414   0.039838
+ 0.0407398   0.0272717  0.0280938     0.0        0.0396184   0.0440149
+ 0.0113065   0.0307095  0.0250017  …  0.0396184  0.0         0.0370655
+ 0.0381869   0.035106   0.0293982     0.0440149  0.0370655   0.0</code></pre>
+</div>
+</div>
+<p>Now we want to rescale each distance matrix so as to limit the impact of rate variation across genes. Otherwise, fast-evolving genes would overwhelm the signal, which may be particularly dangerous if these fast-evolving genes have saturated edge lengths or are affected by long-branch attraction.</p>
+<p>For normalizing the median distance between all pairs of ingroup-outgroup taxa, we define these sets of taxa:</p>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>outgroup <span class="op">=</span> <span class="fu">filter</span>(x <span class="op">-&gt;</span> <span class="fu">occursin</span>(<span class="st">"micranthum"</span>,x), taxa_long)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>ingroup <span class="op">=</span> <span class="fu">setdiff</span>(taxa_long, outgroup)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>med_in2out <span class="op">=</span> <span class="fu">normalizedistances_outgroup2ingroup!</span>(D,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  taxa<span class="op">=</span>taxa_long, ingroup<span class="op">=</span>ingroup, outgroup<span class="op">=</span>outgroup);</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>med_in2out</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>19-element Vector{Float64}:
+ 0.028521906
+ 0.019770464
+ 0.017636436499999998
+ 0.0224220723
+ 0.028571541
+ 0.038314872
+ 0.050856829650000004
+ 0.039494405
+ 0.0235365128
+ 0.0321006079
+ 0.038268231
+ 0.018588236999999997
+ 0.0256485685
+ 0.013689591000000001
+ 0.00205620645
+ 0.032686909
+ 0.0434885215
+ 0.0146293095
+ 0.009773589499999999</code></pre>
+</div>
+</div>
+<p>We can see that all genes had somewhat similar rates, because similar median ingroup-to-outgroup distances, except for gene 15, that had a particularly smaller rate than others. If there is reason to think that slow-evolving genes may need to be removed, a filtering step could be added at this point. For the sake of providing example code, we do this here.</p>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>slowgene_indices <span class="op">=</span> <span class="fu">findall</span>(d <span class="op">-&gt;</span> d <span class="op">&lt;</span> <span class="fl">0.003</span>, med_in2out) <span class="co"># gene 15 here</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<pre><code>1-element Vector{Int64}:
+ 15</code></pre>
+</div>
+</div>
+<p>Gene 15 was not missing any taxa: <code>geneind</code> did not list that gene. So we don’t have to re-run the calculation of the vector of D matrix and of the matrix storing the number of genes contributing data for each pair of taxa. Otherwise, we would need to re-run the calculation of <code>ngenes</code>.</p>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">deleteat!</span>(D, slowgene_indices); <span class="co"># deletes D[k] for a slow gene k</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>num_slow <span class="op">=</span> <span class="fu">length</span>(slowgene_indices) <span class="co"># 1: number of slow genes that are being exluded</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>ngenes <span class="op">.-=</span> num_slow <span class="co"># gene 15 was not missing any taxa</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(D) <span class="co"># 18: 1 fewer than before</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<pre><code>18</code></pre>
+</div>
+</div>
+<p>Now we can see how the distance matrix changed for the first gene, which we looked at earlier:</p>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>D[<span class="fl">11</span>] <span class="co"># from 11th gene, after normalization. 0s on rows &amp; columns for missing taxa</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<pre><code>17×17 Matrix{Float64}:
+ 0.0         0.0218915  0.017966   …  0.0280185  0.00777595  0.0262628
+ 0.0218915   0.0        0.0131943     0.0187559  0.0211202   0.0241439
+ 0.017966    0.0131943  0.0           0.0193213  0.0171947   0.0202184
+ 0.0279963   0.0258774  0.0219519     0.0320045  0.027225    0.00417073
+ 0.0223105   0.0201917  0.0162661     0.0263187  0.0215393   0.0194882
+ 0.0277117   0.0255929  0.0216673  …  0.0317199  0.0269405   0.0204589
+ 0.00741165  0.0207559  0.0168304     0.0268829  0.00664039  0.0251272
+ 0.0         0.0        0.0           0.0        0.0         0.0
+ 0.00482948  0.0181738  0.0142482     0.0243008  0.00405822  0.022545
+ 0.00478224  0.0181265  0.014201      0.0242535  0.00401097  0.0224978
+ 0.00479612  0.0181404  0.0142149  …  0.0242674  0.00402485  0.0225117
+ 0.019246    0.0230982  0.0191726     0.0292252  0.0184748   0.0274694
+ 0.00478562  0.0181299  0.0142044     0.0242569  0.00401436  0.0225012
+ 0.0251458   0.0158832  0.0164486     0.0136657  0.0243746   0.0273982
+ 0.0280185   0.0187559  0.0193213     0.0        0.0272472   0.0302709
+ 0.00777595  0.0211202  0.0171947  …  0.0272472  0.0         0.0254915
+ 0.0262628   0.0241439  0.0202184     0.0302709  0.0254915   0.0</code></pre>
+</div>
+</div>
+<p>Finally, let’s average distances across genes</p>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>avD <span class="op">=</span> <span class="fu">averagepairwisedistances</span>(D, ngenes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<pre><code>17×17 Matrix{Float64}:
+ 0.0        0.025131   0.0166456  …  0.0333717  0.0204769  0.0221704
+ 0.025131   0.0        0.0201658     0.0288717  0.0161611  0.0170719
+ 0.0166456  0.0201658  0.0           0.0314511  0.0187754  0.0191991
+ 0.0167357  0.0204018  0.012726      0.0325606  0.0202637  0.0158341
+ 0.0173756  0.0195113  0.0129158     0.0316148  0.0196154  0.0206315
+ 0.0246931  0.0204742  0.0210903  …  0.0281747  0.0168907  0.01409
+ 0.0180386  0.017438   0.0202813     0.0293285  0.0154165  0.0160886
+ 0.0218215  0.0203966  0.0241864     0.0308539  0.017866   0.0173078
+ 0.0198536  0.0154942  0.0183717     0.0255542  0.0122323  0.0132618
+ 0.0213477  0.0148121  0.0182099     0.0251534  0.0129911  0.0109218
+ 0.0130298  0.0221036  0.0126574  …  0.0314761  0.0164174  0.0202386
+ 0.0181169  0.0254095  0.0138355     0.0301603  0.0199716  0.0212204
+ 0.0175151  0.0144697  0.0180279     0.0253002  0.010981   0.0114824
+ 0.0221586  0.0148132  0.0163897     0.0241507  0.0123825  0.0128827
+ 0.0333717  0.0288717  0.0314511     0.0        0.0249235  0.0244055
+ 0.0204769  0.0161611  0.0187754  …  0.0249235  0.0        0.0146991
+ 0.0221704  0.0170719  0.0191991     0.0244055  0.0146991  0.0</code></pre>
+</div>
+</div>
+<p>and save this average distance matrix to a file:</p>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>csv_filename <span class="op">=</span> <span class="fu">joinpath</span>(genetreefolder, <span class="st">"averagedist_sample.csv"</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>avD_df <span class="op">=</span> <span class="fu">DataFrame</span>([avD[<span class="op">:</span>,j] for j <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu">size</span>(avD,<span class="fl">2</span>)], <span class="co"># column data</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>                   [<span class="fu">Symbol</span>(t) for t <span class="kw">in</span> taxa_long])    <span class="co"># column names</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>CSV.<span class="fu">write</span>(csv_filename, avD_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<pre><code>"data/genetrees_sample/averagedist_sample.csv"</code></pre>
+</div>
+</div>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./topic6-visualization.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Visualization</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>
