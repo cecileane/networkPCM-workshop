@@ -87,7 +87,7 @@ coltrait = ["red","grey"] # or anything else: names that R knows how to interpre
 
 # start the plot
 R"par"(mar=[0,0,0,0]);
-res = plot(fit.net, tipoffset=0.5, xlim=[0.5,16], arrowlen=0.3,
+res = plot(fit.net, tipoffset=0.5, xlim=[0.5,16], arrowlen=0.15,
            nodelabel = asr[:,[:nodenumber, :fake]]);
 ndf = res[13] # had locations of internal nodes, this time
 
