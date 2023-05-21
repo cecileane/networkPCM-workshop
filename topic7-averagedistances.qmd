@@ -1,0 +1,237 @@
+---
+title: "Average distances"
+format: html
+---
+
+```{julia}
+#| code-fold: true
+#| output: false
+# code from prior sections: load packages used here
+using CSV, DataFrames, PhyloNetworks, StatsBase
+```
+
+This extra section provides example code to estimate genetic distances from gene
+trees, which them may later be used to [calibrate](topic1-netcalibration.qmd#input-genetic-distances)
+a network.
+
+Using gene trees from multiple loci may be best when loci are sufficiently
+informative. With short loci or with loci with few informative sites,
+some branch lengths may often be underestimated at 0 due to a lack of variable
+sites, in which case it may be best to estimate genetic distances from the
+multiple alignment directly.
+
+If loci are sufficiently informative, estimating a gene tree from each locus
+may help reduce noise in the estimated distances (e.g. account for multiple
+substitutions along the same lineage). It can also decrease the influence
+of fast-evolving genes, and rate variation across genes more generally.
+
+We first define helper functions for computing pairwise distances, to
+- get a matrix pairwise distances from each tree
+- normalize these distance matrices, so they all have a similar distance between
+  the ingroup and outgroup taxa
+- average distance matrices across genes.
+These functions were originally developed by [Karimi et al. (2020)](https://doi.org/10.1093/sysbio/syz073).
+Their [code](https://github.com/nkarimi/Adansonia_HybSeq/blob/master/trait-evolution/calibration.jl)
+was slightly modified here.
+To load these helper functions: unfold the code below, then copy & paste into
+your julia session.
+
+```{julia}
+#| code-fold: true
+#| output: false
+"""
+    getpairwisedistances(genetrees, taxa)
+
+Return a tuple of 3 objects:
+1. A vector `D` of matrices, one per gene tree, containing the pairwise distance
+   between all pairs of `taxa`. If taxon i is missing from tree `k`, then the
+   distance matrix `D[k]` for that tree will have zeros on its ith row and ith column.
+   In each matrix, row & column `i` correspond to `taxa[i]`, that is, taxa are
+   listed in the same order as in the input `taxa`.
+2. A matrix `ngenes` containing the number of genes with data on the pair
+   of taxa (i,j) in row i, column j
+3. A vector of integers, giving the index of gene trees with some missing taxa.
+
+This function uses `pairwiseTaxonDistanceMatrix(tree)` from `PhyloNetworks`,
+which outputs a matrix in which the rows correspond to taxa in the order in
+which they come in `tipLabels(tree)`.
+It then takes care of the fact that taxa may not be listed in the same order by
+`tipLabels` across all gene trees.
+"""
+function getpairwisedistances(genetrees, taxa)
+  ntips = length(taxa)
+  D = Array{Float64,2}[]; # empty vector. will contain all distance matrices
+  ngenes = zeros(Int, ntips, ntips) # number of genes that have data for each pair
+  geneind = Int[];        # indices of genes with missing taxa
+  istaxonmissing = Vector{Bool}(undef, ntips) # to be modified in place for each gene
+  for (g_index,g) in enumerate(genetrees)
+    M = zeros(ntips,ntips) # initialized at 0.0: for missing pairs
+    taxnames = tipLabels(g)
+    tipind = Int[]
+    for k in 1:ntips
+      j = findfirst(isequal(taxa[k]), taxnames)
+      notfound = isnothing(j)
+      istaxonmissing[k] = notfound # modified in place
+      notfound || push!(tipind, j) # add j to tipind if taxa[k] was found
+    end
+    M[.!istaxonmissing, .!istaxonmissing] = pairwiseTaxonDistanceMatrix(g)[tipind,tipind]
+    ngenes[.!istaxonmissing, .!istaxonmissing] .+= 1
+    any(istaxonmissing) && push!(geneind,g_index)
+    push!(D, M)
+  end
+  return D, ngenes, geneind
+end
+
+"""
+    normalizedistances_outgroup2ingroup!(D; taxa, ingroup, outgroup)
+
+Rescale each input distance matrix `D[k]`, such that all have the same
+median patristic distance between outgroup taxa and ingroup taxa.
+Input: `D` should be a vector of pairwise distances matrices, one per gene
+(modified by the function).
+Output: vector of original median ingroup-outgroup distance, one per gene.
+
+Why the *median*? So that one taxon or one small clade with an unusually large
+(or low) substitution rate does have an undue influence on the scaling factor.
+
+Assumptions:
+- all trees have at least 1 outgroup and 1 ingroup
+- row & column `i` in D[k] (for gene k) correspond to `taxa[i]`
+- `D[k][i,j]` = 0 if gene `k` doesn't have both taxa `i` and `j`
+- `ingroup` and `outgroup` are sets. The function does *not* check whether they
+  are subsets of `taxa`, or don't overlap, or cover the full set of `taxa`.
+"""
+function normalizedistances_outgroup2ingroup!(D; taxa, ingroup, outgroup)
+  ntax = length(taxa)
+  inding = findall(in(ingroup),  taxa) # indices of ingroup  taxa
+  indout = findall(in(outgroup), taxa) # indices of outgroup taxa
+  medianingroup2outgroup = Float64[]   # will contain 1 median per gene
+  for dm in D # dm = distance matrix
+    size(dm) = (ntax,ntax) || error("there's a distance matrix with wrong dimensions: $(size(dm))")
+    absent = findall([all(dm[:,i] .== 0.0) for i in 1:ntax])
+    push!(medianingroup2outgroup,
+          median(dm[setdiff(inding, absent), setdiff(indout, absent)]) )
+  end
+  mi2o = mean(medianingroup2outgroup)
+  for k in 1:length(D)
+    D[k] .*= mi2o/medianingroup2outgroup[k]
+  end
+  return medianingroup2outgroup
+end
+
+"""
+    averagepairwisedistances(D, ngenes)
+
+Matrix `M` containing the average pairwise distances, weighted by number of
+genes with data on the pair: M[i,j] = (sum_k D[k][i,j] ) / ngenes[i,j].
+This is because for each pair of taxa `i,j`, it is assumed that a number
+`ngenes[i,j]` of genes (indexed by k) contributed data for the pair, and
+the other genes without both taxa i and j had D[k][i,j]=0.
+"""
+function averagepairwisedistances(D, ngenes)
+  return sum(D) ./ ngenes
+end
+```
+
+This tutorial comes with a small sample of gene trees, some of them modified
+so as to illustrate the case when taxa are missing from some genes.
+These gene tree files are in folder `data/genetrees_sample`, and are
+majority-rule consensus trees in nexus format created by MrBayes.
+This is only to give example code to read gene tree files and calculate
+distances. In practice, the majority-rule creates edges of length 0 (polytomies)
+when there is less than 50% credibility for a resolution in the gene tree,
+so this is underestimating the true edge length, and a full consensus tree may
+be a better option.
+
+Below, we show how to read these files using `readNexusTrees` because of the
+nexus format. This function is meant to read a sample of multiple trees (or
+multiple networks), so it returns a list. We only use the first and only tree
+in this list.
+As we can see, loci 10 and 20 are missing a few taxa.
+
+```{julia}
+genetreefolder = joinpath("data","genetrees_sample")
+# list the content of this folder, and filter to keep files ending in ".tre":
+genetreefiles = filter(x -> endswith(x,".tre"), readdir(genetreefolder))
+length(genetreefiles) # 19 files: L22 missing
+function read1gene(filename)
+  genetreefile = joinpath(genetreefolder, filename)
+  return readNexusTrees(genetreefile)[1] # first and only tree in the list
+end
+genetrees = map(read1gene, genetreefiles)
+for (filename,tree) in zip(genetreefiles, genetrees)
+  println("$filename: $(tree.numTaxa) taxa")
+end
+```
+
+To convert each tree to a matrix of pairwise distances, we first need to decide
+the order in which the taxa should be listed.
+```{julia}
+taxa_long = sort!(union([tipLabels(tree) for tree in genetrees]...))
+D, ngenes, geneind = getpairwisedistances(genetrees, taxa_long);
+geneind # indices of genes with some missing taxa
+```
+
+```{julia}
+ngenes # number of genes with data for each pair: 19 for most, some 17's and 18's
+```
+
+```{julia}
+D[11] # distance matrix from 11th gene in the list. if missing taxa, then 0s
+```
+
+Now we want to rescale each distance matrix so as to limit the impact of rate
+variation across genes. Otherwise, fast-evolving genes would overwhelm the
+signal, which may be particularly dangerous if these fast-evolving genes
+have saturated edge lengths or are affected by long-branch attraction.
+
+For normalizing the median distance between all pairs of ingroup-outgroup taxa,
+we define these sets of taxa:
+```{julia}
+outgroup = filter(x -> occursin("micranthum",x), taxa_long)
+ingroup = setdiff(taxa_long, outgroup)
+med_in2out = normalizedistances_outgroup2ingroup!(D,
+  taxa=taxa_long, ingroup=ingroup, outgroup=outgroup);
+med_in2out
+```
+We can see that all genes had somewhat similar rates, because similar median
+ingroup-to-outgroup distances, except for gene 15, that had a particularly smaller
+rate than others.
+If there is reason to think that slow-evolving genes may need to be removed,
+a filtering step could be added at this point.
+For the sake of providing example code, we do this here.
+
+```{julia}
+slowgene_indices = findall(d -> d < 0.003, med_in2out) # gene 15 here
+```
+
+Gene 15 was not missing any taxa: `geneind` did not list that gene.
+So we don't have to re-run the calculation of the vector of D matrix
+and of the matrix storing the number of genes contributing data for each
+pair of taxa. Otherwise, we would need to re-run the calculation of `ngenes`.
+
+```{julia}
+deleteat!(D, slowgene_indices); # deletes D[k] for a slow gene k
+num_slow = length(slowgene_indices) # 1: number of slow genes that are being exluded
+ngenes .-= num_slow # gene 15 was not missing any taxa
+length(D) # 18: 1 fewer than before
+```
+
+Now we can see how the distance matrix changed for the first gene,
+which we looked at earlier:
+```{julia}
+D[11] # from 11th gene, after normalization. 0s on rows & columns for missing taxa
+```
+
+Finally, let's average distances across genes
+```{julia}
+avD = averagepairwisedistances(D, ngenes)
+```
+
+and save this average distance matrix to a file:
+```{julia}
+csv_filename = joinpath(genetreefolder, "averagedist_sample.csv")
+avD_df = DataFrame([avD[:,j] for j in 1:size(avD,2)], # column data
+                   [Symbol(t) for t in taxa_long])    # column names
+CSV.write(csv_filename, avD_df)
+```

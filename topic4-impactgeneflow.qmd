@@ -147,5 +147,13 @@ Note that we fitted the no-shift model with the same data `df` as the shifted
 model. The taxa are listed in a different order in `df` and in the original
 `traits` data frame. It helps to use the same data frame for later comparisons.
 For example, we could run a likelihood ratio test (`lrtest`) to compare the two
-models, altough that we would require re-fitting them with ML method
-instead of the default REML.
+models, altough that we requires re-fitting them with ML method
+instead of the default REML:
+
+```{julia}
+fit_noshift_ML = phylolm(@formula(llength ~ 1), df, net, tipnames=:morph,
+          reml=false, withinspecies_var=true, y_mean_std=true)
+fit_sh8_ML = phylolm(@formula(llength ~ shift_8), df, net, tipnames=:morph,
+          reml=false, withinspecies_var=true, y_mean_std=true)
+lrtest(fit_noshift_ML, fit_sh8_ML)
+```

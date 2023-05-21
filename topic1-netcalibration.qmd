@@ -78,8 +78,9 @@ to match as best as possible these input pairwise distances between taxa.
 These distances were obtained by estimating a gene tree for each gene,
 rescaling the gene trees to decrease rate variation across genes,
 extracting the pairwise distances from each rescaled gene tree,
-then average the pairwise distances across genes. The results were
-saved in file `data/polemonium_geneticpairwisedistances.csv`,
+then average the pairwise distances across genes
+(see [here](topic7-averagedistances.qmd) for how to do this).
+The results were saved in file `data/polemonium_geneticpairwisedistances.csv`,
 which we read below.
 
 ```{julia}
