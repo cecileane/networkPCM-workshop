@@ -3,8 +3,10 @@ title: "Comparative methods on reticulate phylogenies"
 subtitle: "Botany 2023"
 ---
 
-This repository contains materials for a workshop at the Botany 2023 conference
-on 2023-07-23. This session is part of the workshop
+This repository contains materials for a
+[workshop](https://gtiley.github.io/Botany2023-Networks/about/) at the
+Botany 2023 conference on 2023-07-23.
+This session is part of the workshop
 "Methodological advances in reticulate evolution"
 organized by George Tiley & Claudia Solís-Lemus.
 
