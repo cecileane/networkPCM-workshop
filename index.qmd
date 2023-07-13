@@ -56,7 +56,7 @@ Below we explain 2 alternatives ways: using the shell, or not.
     To know if we are inside a git folder, we can do `git status`.
     We want to get an error message, which would mean that we are not in a git repo.  
   * clone the workshop files with:
-    `git clone git@github.com:cecileane/networkPCM-workshop.git`.
+    `git clone https://github.com/cecileane/networkPCM-workshop.git`.
     This command will create a folder `networkPCM-workshop` with the data
     and `.qmd` (quarto markdown) files containing the code rendered on this
     website.
