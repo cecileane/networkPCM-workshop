@@ -15,7 +15,7 @@ website:
     left:
       - href: index.qmd
         text: Home
-      - href: http://crsl4.github.io/PhyloNetworks.jl/latest/
+      - href: https://juliaphylo.github.io/PhyloNetworks.jl/v0.16/
         text: PhyloNetworks
     right:
       - icon: github
