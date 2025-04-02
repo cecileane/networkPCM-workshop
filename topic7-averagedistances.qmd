@@ -147,7 +147,7 @@ Below, we show how to read these files using `readNexusTrees` because of the
 nexus format. This function is meant to read a sample of multiple trees (or
 multiple networks), so it returns a list. We only use the first and only tree
 in this list.
-As we can see, loci 10 and 20 are missing a few taxa.
+As we can see, loci L10 and L20 are missing a few taxa.
 
 ```{julia}
 genetreefolder = joinpath("data","genetrees_sample")

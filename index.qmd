@@ -4,7 +4,7 @@ subtitle: "Botany 2023"
 ---
 
 This repository contains materials for a
-[workshop](https://gtiley.github.io/Botany2023-Networks/about/) at the
+[workshop](https://gtiley.github.io/Botany2023-Networks/) at the
 Botany 2023 conference on 2023-07-23.
 This session is part of the workshop
 "Methodological advances in reticulate evolution"
@@ -13,7 +13,7 @@ organized by George Tiley & Claudia Solís-Lemus.
 Goal: learn to analyze trait data using phylogenetic comparative methods (PCMs)
 on reticulate phylogenies, modelled by phylogenetic networks --also named
 admixture graphs when modelling closely-related populations.
-We will use methods implemented [PhyloNetworks](https://github.com/crsl4/PhyloNetworks.jl).
+We will use methods implemented [PhyloNetworks](https://github.com/juliaphylo/PhyloNetworks.jl).
 
 You can find and clone the workshop material at this
 [github repository](https://github.com/cecileane/networkPCM-workshop).
@@ -77,9 +77,10 @@ Open julia, e.g. in a terminal integrated in VSCode. Preferably, open julia
 from the workshop directory (cloned or downloaded earlier)
 to make it easier to use this directory as a julia environment.
 
-Then within julia, install packages including
-[PhyloNetworks](http://crsl4.github.io/PhyloNetworks.jl/latest/man/installation/)
-and
+Then within julia, install
+[PhyloNetworks](https://juliaphylo.github.io/PhyloNetworks.jl/v0.16/man/installation/)
+v0.16 (see below to install this particular version).
+Also install other packages, including:
 [PhyloPlots](https://cecileane.github.io/PhyloPlots.jl/stable/man/installation/#Installation).
 For this, we suggest using the environment provided in this tutorial,
 which consists of the two `.toml` files that lists which packages to install
@@ -104,7 +105,9 @@ Then type this:
 ```julia
 add CSV, CategoricalArrays, DataFrames
 add Distributions, StatsBase, StatsModels
-add RCall, PhyloNetworks, PhyloPlots,
+add RCall
+add PhyloNetworks@0.16.4
+add PhyloPlots # do this after adding PhyloNetworks v0.16, to install a compatible version
 ```
 Installation may take a while, especially if internet is slow.
 
