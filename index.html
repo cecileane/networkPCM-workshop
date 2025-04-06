@@ -148,7 +148,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
  <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="http://crsl4.github.io/PhyloNetworks.jl/latest/">
+    <a class="nav-link" href="https://juliaphylo.github.io/PhyloNetworks.jl/v0.16/">
  <span class="menu-text">PhyloNetworks</span></a>
   </li>  
 </ul>
@@ -267,8 +267,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<p>This repository contains materials for a <a href="https://gtiley.github.io/Botany2023-Networks/about/">workshop</a> at the Botany 2023 conference on 2023-07-23. This session is part of the workshop “Methodological advances in reticulate evolution” organized by George Tiley &amp; Claudia Solís-Lemus.</p>
-<p>Goal: learn to analyze trait data using phylogenetic comparative methods (PCMs) on reticulate phylogenies, modelled by phylogenetic networks –also named admixture graphs when modelling closely-related populations. We will use methods implemented <a href="https://github.com/crsl4/PhyloNetworks.jl">PhyloNetworks</a>.</p>
+<p>This repository contains materials for a <a href="https://gtiley.github.io/Botany2023-Networks/">workshop</a> at the Botany 2023 conference on 2023-07-23. This session is part of the workshop “Methodological advances in reticulate evolution” organized by George Tiley &amp; Claudia Solís-Lemus.</p>
+<p>Goal: learn to analyze trait data using phylogenetic comparative methods (PCMs) on reticulate phylogenies, modelled by phylogenetic networks –also named admixture graphs when modelling closely-related populations. We will use methods implemented <a href="https://github.com/juliaphylo/PhyloNetworks.jl">PhyloNetworks</a>.</p>
 <p>You can find and clone the workshop material at this <a href="https://github.com/cecileane/networkPCM-workshop">github repository</a>.</p>
 <section id="preparation" class="level2">
 <h2 class="anchored" data-anchor-id="preparation">preparation</h2>
@@ -311,7 +311,9 @@ This should <strong>not</strong> be inside an already existing git repository. T
 <section id="install-packages" class="level3">
 <h3 class="anchored" data-anchor-id="install-packages">install packages</h3>
 <p>Open julia, e.g.&nbsp;in a terminal integrated in VSCode. Preferably, open julia from the workshop directory (cloned or downloaded earlier) to make it easier to use this directory as a julia environment.</p>
-<p>Then within julia, install packages including <a href="http://crsl4.github.io/PhyloNetworks.jl/latest/man/installation/">PhyloNetworks</a> and <a href="https://cecileane.github.io/PhyloPlots.jl/stable/man/installation/#Installation">PhyloPlots</a>. For this, we suggest using the environment provided in this tutorial, which consists of the two <code>.toml</code> files that lists which packages to install (in <code>Project.toml</code>) and which versions exactly (in <code>Manifest.toml</code>). These installations will not interfere with other ways you might be using julia. Here is how:</p>
+<p>Then within julia, install <a href="https://juliaphylo.github.io/PhyloNetworks.jl/v0.16/man/installation/">PhyloNetworks</a> v0.16 (see below to install this particular version).
+Also install other packages, including
+<a href="https://cecileane.github.io/PhyloPlots.jl/stable/man/installation/#Installation">PhyloPlots</a>. For this, we suggest using the environment provided in this tutorial, which consists of the two <code>.toml</code> files that lists which packages to install (in <code>Project.toml</code>) and which versions exactly (in <code>Manifest.toml</code>). These installations will not interfere with other ways you might be using julia. Here is how:</p>
 <ul>
 <li>type <code>]</code> to switch to package mode</li>
 <li>type <code>activate .</code> if your current directory is the workshop folder. Otherwise, type <code>activate path-to-workshop-folder</code> to activate the workshop folder as the current julia environment for packages.</li>
@@ -320,7 +322,10 @@ This should <strong>not</strong> be inside an already existing git repository. T
 <p>Alternatively, if you want to install these packages in the default or any other environment, type <code>]</code> to switch to package mode. Julia will show a prompt like this: <code>(networkPCM-workshop) pkg&gt;</code> showing the name of the folder used as environment, followed by “pkg&gt;” to mean that it’s in package mode. Then type this:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>add CSV, CategoricalArrays, DataFrames</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>add Distributions, StatsBase, StatsModels</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>add RCall, PhyloNetworks, PhyloPlots,</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>add RCall</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>add PhyloNetworks@<span class="fl">0.16.4</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>PhyloPlots <span class="co"># do this after adding PhyloNetworks v0.16, to install a compatible version</span></span>
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Installation may take a while, especially if internet is slow.</p>
 <p>After this is done, type delete or backspace to go back to julian mode (exit from package mode). The julia prompt will go back to <code>julia&gt;</code>.</p>
 <p>We will make use of R within Julia, and of some R functions in specific R packages. Install the <code>ape</code> and <code>viridis</code> packages in R:</p>

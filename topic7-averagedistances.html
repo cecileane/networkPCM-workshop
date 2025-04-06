@@ -148,7 +148,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
  <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="http://crsl4.github.io/PhyloNetworks.jl/latest/">
+    <a class="nav-link" href="https://juliaphylo.github.io/PhyloNetworks.jl/v0.16/">
  <span class="menu-text">PhyloNetworks</span></a>
   </li>  
 </ul>
@@ -364,7 +364,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </details>
 </div>
 <p>This tutorial comes with a small sample of gene trees, some of them modified so as to illustrate the case when taxa are missing from some genes. These gene tree files are in folder <code>data/genetrees_sample</code>, and are majority-rule consensus trees in nexus format created by MrBayes. This is only to give example code to read gene tree files and calculate distances. In practice, the majority-rule creates edges of length 0 (polytomies) when there is less than 50% credibility for a resolution in the gene tree, so this is underestimating the true edge length, and a full consensus tree may be a better option.</p>
-<p>Below, we show how to read these files using <code>readNexusTrees</code> because of the nexus format. This function is meant to read a sample of multiple trees (or multiple networks), so it returns a list. We only use the first and only tree in this list. As we can see, loci 10 and 20 are missing a few taxa.</p>
+<p>Below, we show how to read these files using <code>readNexusTrees</code> because of the nexus format. This function is meant to read a sample of multiple trees (or multiple networks), so it returns a list. We only use the first and only tree in this list. As we can see, loci L10 and L20 are missing a few taxa.</p>
 <div class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>genetreefolder <span class="op">=</span> <span class="fu">joinpath</span>(<span class="st">"data"</span>,<span class="st">"genetrees_sample"</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># list the content of this folder, and filter to keep files ending in ".tre":</span></span>
